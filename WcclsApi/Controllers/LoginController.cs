@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using WcclsApi.Models;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WcclsCore;
+using WcclsCore.Models.Request;
 
 namespace WcclsApi.Controllers {
 
@@ -22,7 +21,7 @@ namespace WcclsApi.Controllers {
 				return new BadRequestObjectResult("Invalid Username or Password.");
 			}
 			WcclsWebScraping scraping = new WcclsWebScraping();
-			string token = await scraping.Login("23614016168750", "1708");
+			string token = await scraping.Login("23614015566541", "1708");
 			if(string.IsNullOrWhiteSpace(token)) {
 				return BadRequest("Invalid Username or Password.");
 			}

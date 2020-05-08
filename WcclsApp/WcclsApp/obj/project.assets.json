@@ -569,31 +569,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lukem\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "/Users/lukemiletta/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp\\WcclsApp.csproj",
+      "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj",
       "projectName": "WcclsApp",
-      "projectPath": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp\\WcclsApp.csproj",
-      "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp\\obj\\",
+      "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj",
+      "packagesPath": "/Users/lukemiletta/.nuget/packages/",
+      "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "/Users/lukemiletta/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -635,7 +628,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.200/RuntimeIdentifierGraph.json"
       }
     }
   }

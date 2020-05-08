@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WcclsApi.Models {
+namespace WcclsCore.Models.Request {
 	///<summary>The request model for the login method.</summary>
 	public class LoginRequest {
 

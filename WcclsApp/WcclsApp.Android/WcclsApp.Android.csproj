@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -88,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WcclsApp\WcclsApp.csproj">
-      <Project>{25072CFF-8104-49AE-8F08-B1D5B2E63A21}</Project>
+      <Project>{03182EC1-D4BF-4F3D-A6B5-A56799FD5612}</Project>
       <Name>WcclsApp</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,12 @@
+/Users/lukemiletta/Documents/Wccls/WcclsCore/bin/Debug/netstandard2.1/WcclsCore.deps.json
+/Users/lukemiletta/Documents/Wccls/WcclsCore/bin/Debug/netstandard2.1/WcclsCore.dll
+/Users/lukemiletta/Documents/Wccls/WcclsCore/bin/Debug/netstandard2.1/WcclsCore.pdb
+/Users/lukemiletta/Documents/Wccls/WcclsCore/bin/Debug/netstandard2.1/Core.dll
+/Users/lukemiletta/Documents/Wccls/WcclsCore/bin/Debug/netstandard2.1/Core.pdb
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.csprojAssemblyReference.cache
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.csproj.CoreCompileInputs.cache
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.AssemblyInfoInputs.cache
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.AssemblyInfo.cs
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.csproj.CopyComplete
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.dll
+/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.pdb

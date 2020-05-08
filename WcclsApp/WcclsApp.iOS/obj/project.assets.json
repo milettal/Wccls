@@ -1018,39 +1018,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lukem\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "/Users/lukemiletta/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp.iOS\\WcclsApp.iOS.csproj",
+      "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.iOS/WcclsApp.iOS.csproj",
       "projectName": "WcclsApp.iOS",
-      "projectPath": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp.iOS\\WcclsApp.iOS.csproj",
-      "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp.iOS\\obj\\",
+      "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.iOS/WcclsApp.iOS.csproj",
+      "packagesPath": "/Users/lukemiletta/.nuget/packages/",
+      "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.iOS/obj/",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "/Users/lukemiletta/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "xamarinios10"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "xamarinios10": {
           "projectReferences": {
-            "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp\\WcclsApp.csproj": {
-              "projectPath": "C:\\Users\\lukem\\source\\repos\\WcclsApi\\WcclsApp\\WcclsApp\\WcclsApp.csproj"
+            "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj": {
+              "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj"
             }
           }
         }

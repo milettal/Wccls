@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Text.Json.Serialization;
 
-namespace WcclsCore {
+namespace WcclsCore.Models {
 	///<summary>A class that represents the statistics on a users borrowing metrics.</summary>
 	public class Borrowing {
 
@@ -32,6 +33,9 @@ namespace WcclsCore {
 		///<summary>Indicates if the recently returned feature is enabled.</summary>
 		[JsonProperty("recently_returned_total_count")]
 		public int? RecentlyReturnedTotalCount { get; set; }
+		///<summary>The next time something is due.</summary>
+		[JsonProperty("next_due")]
+		public string NextDueDate { get; set; }
 		///<summary>The total number of fines an account has.</summary>
 		public double Fines { get; set; }
 	}
