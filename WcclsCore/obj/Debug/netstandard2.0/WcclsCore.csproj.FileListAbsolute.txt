@@ -1,0 +1,12 @@
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\bin\Debug\netstandard2.0\WcclsCore.deps.json
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\bin\Debug\netstandard2.0\WcclsCore.dll
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\bin\Debug\netstandard2.0\WcclsCore.pdb
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\bin\Debug\netstandard2.0\Core.dll
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\bin\Debug\netstandard2.0\Core.pdb
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.csprojAssemblyReference.cache
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.csproj.CoreCompileInputs.cache
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.AssemblyInfoInputs.cache
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.AssemblyInfo.cs
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.csproj.CopyComplete
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.dll
+C:\Users\lukem\source\repos\WcclsApi\WcclsCore\obj\Debug\netstandard2.0\WcclsCore.pdb
