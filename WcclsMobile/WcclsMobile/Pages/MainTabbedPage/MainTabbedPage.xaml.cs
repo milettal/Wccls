@@ -7,8 +7,8 @@ using Core.Xamarin.Controls;
 using Xamarin.Forms;
 
 namespace WcclsMobile.Pages {
-	public partial class MainPage : PageBase {
-		public MainPage() {
+	public partial class MainTabbedPage : TabbedPage {
+		public MainTabbedPage() {
 			InitializeComponent();
 		}
 	}

@@ -8,10 +8,48 @@
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
     <PackageReference Include="Prism.Unity.Forms" Version="7.2.0.1422" />
     <PackageReference Include="Xamarin.Forms.Maps" Version="4.6.0.726" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Prism.Plugin.Popups" Version="7.2.0.1046" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core.Xamarin\Core.Xamarin.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\MainTabbedPage\" />
+    <Folder Include="Pages\SearchPage\" />
+    <Folder Include="Pages\MenuPage\" />
+    <Folder Include="Pages\CheckedOutPage\" />
+    <Folder Include="Pages\HoldsPage\" />
+    <Folder Include="Pages\FinesPage\" />
+    <Folder Include="Images\" />
+    <Folder Include="Services\" />
+    <Folder Include="Pages\AccountsPage\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Images\settings-24px.svg" />
+    <None Remove="Images\local_library-24px.svg" />
+    <None Remove="Images\help-24px.svg" />
+    <None Remove="Images\feedback-24px.svg" />
+    <None Remove="Images\account_circle-black-24px.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\settings-24px.svg" />
+    <EmbeddedResource Include="Images\local_library-24px.svg" />
+    <EmbeddedResource Include="Images\help-24px.svg" />
+    <EmbeddedResource Include="Images\feedback-24px.svg" />
+    <EmbeddedResource Include="Images\account_circle-black-24px.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Services\AccountsPage.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Pages\AccountsPage\AccountsPage.xaml.cs">
+      <DependentUpon>..\..\Services\AccountsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

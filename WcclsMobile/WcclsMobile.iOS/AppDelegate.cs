@@ -1,6 +1,8 @@
-﻿using Foundation;
+﻿using FFImageLoading.Forms.Platform;
+using Foundation;
 using Prism;
 using Prism.Ioc;
+using Rg.Plugins.Popup;
 using UIKit;
 
 namespace WcclsMobile.iOS {
@@ -16,6 +18,8 @@ namespace WcclsMobile.iOS {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
             Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
+            CachedImageRenderer.Init();
+            Popup.Init();
             LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);

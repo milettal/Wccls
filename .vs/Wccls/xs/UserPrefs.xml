@@ -1,48 +1,43 @@
 ﻿<Properties StartupConfiguration="{6422A971-C5C4-4C61-B0B0-1C15C4B7F0EE}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WcclsCore/WcclsWebScraping.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WcclsApi/Program.cs">
     <Files>
-      <File FileName="WcclsApi/Controllers/AccountController.cs" Line="82" Column="1" />
-      <File FileName="WcclsCore/WcclsWebScraping.cs" Line="351" Column="1" />
-      <File FileName="WcclsCore/Models/Hold.cs" Line="13" Column="25" />
-      <File FileName="WcclsCore/Models/Result/CheckedOutResult.cs" Line="15" Column="15" />
-      <File FileName="WcclsCore/Models/FineItem.cs" Line="1" Column="1" />
-      <File FileName="../../../../usr/local/share/dotnet/sdk/3.1.200/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.DefaultItems.targets" Line="295" Column="5" />
-      <File FileName="WcclsCore/Models/CheckedOutItem.cs" Line="6" Column="15" />
-      <File FileName="WcclsCore/WcclsCore.csproj" Line="23" Column="37" />
-      <File FileName="WcclsCore/Models/Request/RenewItemsRequest.cs" Line="8" Column="47" />
-      <File FileName="WcclsCore/Models/Result/RenewItemsResult.cs" Line="1" Column="1" />
+      <File FileName="WcclsMobile/WcclsMobile/Services/WcclsApiService.cs" Line="9" Column="56" />
+      <File FileName="WcclsApi/Program.cs" Line="13" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Wccls" expanded="True">
-            <Node name="Mobile" expanded="True" />
-            <Node name="Web" expanded="True">
-              <Node name="WcclsApi" expanded="True">
-                <Node name="Controllers" expanded="True" />
+            <Node name="Mobile" expanded="True">
+              <Node name="WcclsMobile" expanded="True">
+                <Node name="Services" expanded="True" />
               </Node>
             </Node>
-            <Node name="Core" expanded="True" />
-            <Node name="WcclsCore" expanded="True">
-              <Node name="Models" expanded="True">
-                <Node name="Request" expanded="True" />
-                <Node name="Result" expanded="True" />
+            <Node name="Web" expanded="True">
+              <Node name="WcclsApi" expanded="True">
+                <Node name="Properties" expanded="True" />
+                <Node name="Program.cs" selected="True" />
               </Node>
-              <Node name="WcclsWebScraping.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Mobile.WcclsMobile.Android PreferredExecutionTarget="Android.pixel_2_pie_9_0_-_api_28" />
   <MonoDevelop.Ide.ItemProperties.Web.WcclsApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/lukemiletta/Documents/Wccls/WcclsCore/WcclsWebScraping.cs" relfile="WcclsCore/WcclsWebScraping.cs" line="268" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
+  <MultiItemStartupConfigurations>
+    <MultiItemSolutionRunConfiguration Id="Android and API" Name="Android and API">
+      <Items>
+        <StartupItem ItemId="{6422A971-C5C4-4C61-B0B0-1C15C4B7F0EE}" ItemName="WcclsApi" ConfigurationId="Default" />
+        <StartupItem ItemId="{16A4743D-1C40-41A7-A014-C94F100C9386}" ItemName="WcclsMobile.Android" ConfigurationId="Default" />
+      </Items>
+    </MultiItemSolutionRunConfiguration>
+  </MultiItemStartupConfigurations>
   <MonoDevelop.Ide.ItemProperties.Mobile.WcclsApp.Android PreferredExecutionTarget="Android.Android_Accelerated_Oreo" />
 </Properties>

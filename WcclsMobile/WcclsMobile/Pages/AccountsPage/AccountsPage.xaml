@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    Title="Accounts"
+    x:Class="WcclsMobile.Pages.AccountsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IsCollectionNullOrEmpty x:Key="IsCollectionNullOrEmpty" />
+            <converters:IsCollectionNotNullOrEmpty x:Key="IsCollectionNotNullOrEmpty" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            IconImageSource="baseline_add_white_36.png"
+            Order="Primary"
+            Command="{Binding AddAccountCommand}"
+            Priority="0" />
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <StackLayout
+            IsVisible="{Binding ListUsers,Converter={StaticResource IsCollectionNullOrEmpty}}">
+            <Label
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                FontSize="Medium"
+                Text="You can add a new user by clicking the + button." />
+        </StackLayout>
+        <CollectionView
+            ItemsSource="{Binding ListUsers}"
+            SelectionMode="Single"
+            IsVisible="{Binding ListUsers,Converter={StaticResource IsCollectionNotNullOrEmpty}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label
+                        Text="{Binding Nickname}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

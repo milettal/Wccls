@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    IconImageSource="baseline_menu_white_48.png"
+    Title="Menu"
+    x:Class="WcclsMobile.Pages.MenuPage">
+    <CollectionView
+        x:Name="_collectionView"
+        SelectionMode="Single"
+        SelectedItem="{Binding SelectedMenuItem}"
+        SelectionChangedCommand="{Binding MenuItemSelectedCommand}"
+        SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionView}, Path=SelectedItem}"
+        ItemsSource="{Binding ListMenuItems}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Grid ColumnSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ffimageLoading:SvgCachedImage
+                        Margin="10,0,0,0"
+                        Grid.Column="0"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        Source="{Binding Icon}" />
+                    <Label
+                        Grid.Column="1"
+                        VerticalOptions="Center"
+                        Margin="15,20"
+                        FontSize="Large"
+                        Text="{Binding Title}" />
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

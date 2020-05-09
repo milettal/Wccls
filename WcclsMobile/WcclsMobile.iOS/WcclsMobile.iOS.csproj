@@ -194,7 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WcclsMobile\WcclsMobile.csproj">
-      <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
+      <Project>{4EDA8488-1302-4C26-9A9F-4C38720E648E}</Project>
       <Name>WcclsMobile</Name>
     </ProjectReference>
   </ItemGroup>

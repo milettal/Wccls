@@ -3395,38 +3395,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lukem\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "/Users/lukemiletta/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj",
+      "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsCore/Core.Wccls.csproj",
       "projectName": "Core.Wccls",
-      "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj",
-      "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\obj\\",
+      "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsCore/Core.Wccls.csproj",
+      "packagesPath": "/Users/lukemiletta/.nuget/packages/",
+      "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "/Users/lukemiletta/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.1": {
           "projectReferences": {
-            "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj"
+            "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj": {
+              "projectPath": "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj"
             }
           }
         }
@@ -3468,7 +3461,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.200/RuntimeIdentifierGraph.json"
       }
     }
   }

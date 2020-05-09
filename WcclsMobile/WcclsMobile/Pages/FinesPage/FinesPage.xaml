@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    Title="Fines"
+    IconImageSource="baseline_attach_money_white_48.png"
+    x:Class="WcclsMobile.Pages.FinesPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>      
+        <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
+            <Label
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                FontSize="Medium"
+                Text="Please login to an account to use this feature." />
+        </StackLayout>
+        <StackLayout IsVisible="{Binding IsUserLoggedIn}">
+            <Label
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                FontSize="Large"
+                Text="Logged In!" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
