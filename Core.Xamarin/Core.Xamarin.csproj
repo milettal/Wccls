@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.2.0.1422" />
+    <PackageReference Include="Prism.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Controls\PageBase.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
