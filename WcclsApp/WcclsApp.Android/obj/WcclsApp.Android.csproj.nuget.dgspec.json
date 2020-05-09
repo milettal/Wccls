@@ -1,33 +1,39 @@
 {
   "format": 1,
   "restore": {
-    "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.Android/WcclsApp.Android.csproj": {}
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp.Android\\WcclsApp.Android.csproj": {}
   },
   "projects": {
-    "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.Android/WcclsApp.Android.csproj": {
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp.Android\\WcclsApp.Android.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.Android/WcclsApp.Android.csproj",
+        "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp.Android\\WcclsApp.Android.csproj",
         "projectName": "WcclsApp.Android",
-        "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.Android/WcclsApp.Android.csproj",
-        "packagesPath": "/Users/lukemiletta/.nuget/packages/",
-        "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp.Android/obj/",
+        "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp.Android\\WcclsApp.Android.csproj",
+        "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp.Android\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/lukemiletta/.config/NuGet/NuGet.Config"
+          "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "monoandroid90"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "monoandroid90": {
             "projectReferences": {
-              "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj": {
-                "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj"
+              "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp\\WcclsApp.csproj": {
+                "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp\\WcclsApp.csproj"
               }
             }
           }
@@ -48,22 +54,28 @@
         }
       }
     },
-    "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj": {
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp\\WcclsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj",
+        "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp\\WcclsApp.csproj",
         "projectName": "WcclsApp",
-        "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/WcclsApp.csproj",
-        "packagesPath": "/Users/lukemiletta/.nuget/packages/",
-        "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsApp/WcclsApp/obj/",
+        "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp\\WcclsApp.csproj",
+        "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApp\\WcclsApp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/lukemiletta/.config/NuGet/NuGet.Config"
+          "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -105,7 +117,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.200/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

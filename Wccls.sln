@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WcclsApi", "WcclsApi\WcclsApi.csproj", "{6422A971-C5C4-4C61-B0B0-1C15C4B7F0EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WcclsCore", "WcclsCore\WcclsCore.csproj", "{AA88BAF5-B174-42D1-ACDA-BFB7D8468AF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Wccls", "WcclsCore\Core.Wccls.csproj", "{AA88BAF5-B174-42D1-ACDA-BFB7D8468AF1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{D011EEBD-7054-4573-8414-70AD6C6AC2E3}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcclsApp.Android", "WcclsAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcclsApp.iOS", "WcclsApp\WcclsApp.iOS\WcclsApp.iOS.csproj", "{A348ECC5-1B58-413A-86BF-A7D88B3A9C3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcclsApp", "WcclsApp\WcclsApp\WcclsApp.csproj", "{03182EC1-D4BF-4F3D-A6B5-A56799FD5612}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WcclsApp", "WcclsApp\WcclsApp\WcclsApp.csproj", "{03182EC1-D4BF-4F3D-A6B5-A56799FD5612}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

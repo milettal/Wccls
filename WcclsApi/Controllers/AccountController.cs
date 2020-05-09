@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WcclsApi.DependencyInjection;
 using WcclsCore;
 using WcclsCore.Models;
 using WcclsCore.Models.Request;
@@ -10,9 +12,16 @@ namespace WcclsApi.Controllers {
 
 	[ApiController]
 	[Route("[controller]")]
+	[Authorize]
 	public class AccountController : ControllerBase {
 
 		private const string PAYMENT_URL = "https://1811.ecs.envisionware.net/eCommerceWebModule/Home";
+
+		private ISessionInfo _sessionInfo { get; }
+
+		public AccountController(ISessionInfo sessionInfo) {
+			_sessionInfo = sessionInfo;
+		}
 
 		///<summary>Logs the user in and returns a session id for the user.</summary>
 		///<returns>The Session ID for this login. This will be used to successfully send every request.</returns>
@@ -22,7 +31,7 @@ namespace WcclsApi.Controllers {
 			if(string.IsNullOrWhiteSpace(sessionId)) {
 				return new BadRequestObjectResult("Invalid Session Id.");
 			}
-			WcclsWebScraping scraping = new WcclsWebScraping();
+			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client);
 			Borrowing retVal;
 			try {
 				retVal = await scraping.GetBorrowing();
@@ -37,10 +46,10 @@ namespace WcclsApi.Controllers {
 		[HttpGet]
 		[Route("fines")]
 		public async Task<ObjectResult> GetFines() {
-			WcclsWebScraping scraping = new WcclsWebScraping();
+			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client);
 			FinesResult result;
 			try {
-				result = await scraping.GetFines("1456585468");
+				result = await scraping.GetFines(_sessionInfo.UserId);
 			}
 			catch(Exception e) {
 				return new BadRequestObjectResult("bad");
@@ -51,10 +60,10 @@ namespace WcclsApi.Controllers {
 		[HttpGet]
 		[Route("holds")]
 		public async Task<ObjectResult> GetHolds() {
-			WcclsWebScraping scraping = new WcclsWebScraping();
+			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client);
 			HoldsResult result;
 			try {
-				result = await scraping.GetHolds("1435085048");
+				result = await scraping.GetHolds(_sessionInfo.UserId);
 			}
 			catch(Exception e) {
 				return new BadRequestObjectResult("bad");
@@ -65,10 +74,10 @@ namespace WcclsApi.Controllers {
 		[HttpGet]
 		[Route("checkout")]
 		public async Task<ObjectResult> GetCheckedOut() {
-			WcclsWebScraping scraping = new WcclsWebScraping();
+			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client);
 			CheckedOutResult result;
 			try {
-				result=await scraping.GetCheckedOut("1435085048");
+				result=await scraping.GetCheckedOut(_sessionInfo.UserId);
 			}
 			catch(Exception e) {
 				return new BadRequestObjectResult("bad");
@@ -82,8 +91,8 @@ namespace WcclsApi.Controllers {
 			if(request?.ListCheckoutIds == null || request.ListCheckoutIds.Count == 0) {
 				return new BadRequestObjectResult("Checkout IDs required");
 			}
-			WcclsWebScraping scraping = new WcclsWebScraping();
-			RenewItemsResult result = await scraping.RenewItems(request.ListCheckoutIds, "1435085048");
+			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client);
+			RenewItemsResult result = await scraping.RenewItems(request.ListCheckoutIds, _sessionInfo.UserId);
 			return Ok(result);
 		}
 

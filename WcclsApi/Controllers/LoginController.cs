@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WcclsApi.DependencyInjection;
 using WcclsCore;
 using WcclsCore.Models.Request;
 
@@ -7,10 +11,13 @@ namespace WcclsApi.Controllers {
 
 	[ApiController]
 	[Route("[controller]")]
+	[AllowAnonymous]
 	public class LoginController : ControllerBase {
 
-		public LoginController() {
-			
+		private ISessionCache _sessionCache { get; }
+
+		public LoginController(ISessionCache sessionCache) {
+			_sessionCache = sessionCache;
 		}
 
 		///<summary>Logs the user in and returns a session id for the user.</summary>
@@ -20,12 +27,15 @@ namespace WcclsApi.Controllers {
 			if(string.IsNullOrWhiteSpace(request?.Username) || string.IsNullOrWhiteSpace(request?.Password)) {
 				return new BadRequestObjectResult("Invalid Username or Password.");
 			}
-			WcclsWebScraping scraping = new WcclsWebScraping();
-			string token = await scraping.Login("23614015566541", "1708");
-			if(string.IsNullOrWhiteSpace(token)) {
+			CookieContainer container = new CookieContainer();
+			using HttpClient client = new HttpClient(new HttpClientHandler { CookieContainer = container });
+			WcclsWebScraping scraping = new WcclsWebScraping(client);
+			long userId = await scraping.Login(request.Username, request.Password);
+			if(userId <= 0) {
 				return BadRequest("Invalid Username or Password.");
 			}
-			return Ok(token);
+			string sessionGuid = _sessionCache.AddSession(container, userId);
+			return Ok(sessionGuid);
 		}
 	}
 

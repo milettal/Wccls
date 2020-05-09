@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WcclsApi.DependencyInjection;
 
 namespace WcclsApi {
 	public class Startup {
@@ -15,7 +18,16 @@ namespace WcclsApi {
 
 		//This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services) {
-			services.AddControllers();
+			services
+				.AddSingleton<ISessionCache, SessionCache>()
+				.AddSingleton<ISystemClock, SystemClock>()
+				.AddAuthentication("BasicAuthentication")
+				.AddScheme<AuthenticationSchemeOptions,BasicAuthenticationHandler>("BasicAuthentication",null);
+			services.AddScoped<ISessionInfo, SessionInfo>(prov => {
+					 return new SessionInfo(null, null, 0);
+				 })
+				.AddControllers();
+
 		}
 
 		//This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +37,7 @@ namespace WcclsApi {
 			}
 			app.UseHttpsRedirection();
 			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllers();

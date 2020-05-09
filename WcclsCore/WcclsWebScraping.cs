@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WcclsCore.Models;
 using WcclsCore.Models.Result;
@@ -16,8 +16,8 @@ namespace WcclsCore {
 
 		///<summary>The URL for the login method for WCCLS.</summary>
 		private const string LOGIN_URL = "https://wccls.bibliocommons.com/user/login?destination=%2Fuser_dashboard";
-		///<summary>The URL for the global activity api call. This is how we can tell if the user successfully logged in or not.</summary>
-		private const string GLOBAL_ACTIVITY = "https://wccls.bibliocommons.com/user/1456585467/privacy_settings/global_activity_feed";
+		///<summary>Returns the user dashboard which includes the username and unique identifier of the user.</summary>
+		private const string USER_DASHBOARD = "https://wccls.bibliocommons.com/user_dashboard";
 		///<summary>The URL for the fines portion of the borrowing object.</summary>
 		private const string BORROWING_FINES_URL = "https://wccls.bibliocommons.com/user_stats/borrowing?section=fines";
 		///<summary>The URL for the checked out portion of the borrowing object.</summary>
@@ -32,24 +32,19 @@ namespace WcclsCore {
 		private const string HOLDS_URL = "https://gateway.bibliocommons.com/v2/libraries/wccls/holds";
 		///<summary>The URL for getting checked out items.</summary>
 		private const string CHECKED_OUT_URL = "https://gateway.bibliocommons.com/v2/libraries/wccls/checkouts";
-		///<summary>The key for the session id in the Set-Cookie response.</summary>
-		private const string SESSION_ID_KEY = "_live_bcui_session_id";
-		///<summary>The singleton instance for this HttpClient.</summary>
-		private static HttpClient _client { get; }
-		///<summary>The cookie container for the client.</summary>
-		private static CookieContainer _cookieContainer { get; }
+		///<summary>The instance for this HttpClient.</summary>
+		private HttpClient _client { get; }
 
-		static WcclsWebScraping() {
-			_cookieContainer=new CookieContainer();
-			_client=new HttpClient(new HttpClientHandler { CookieContainer=_cookieContainer });
+		public WcclsWebScraping(HttpClient client) {
+			_client = client;
 		}
 
 		///<summary>Attempts to log the user in with the given username or password. If this fails, it will return an empty string.</summary>
 		///<param name="username">The username for this account.</param>
 		///<param name="password">The password for this account.</param>
 		///<exception cref="ArgumentException">Thrown if the username or password are blank.</exception>
-		///<returns>The access token for this login.</returns>
-		public async Task<string> Login(string username ,string password) {
+		///<returns>The users id.</returns>
+		public async Task<long> Login(string username, string password) {
 			if(string.IsNullOrWhiteSpace(username)) {
 				throw new ArgumentException("Username is required." ,nameof(username));
 			}
@@ -63,30 +58,20 @@ namespace WcclsCore {
 			formData["local"]="false";
 			HttpResponseMessage loginResponse = await _client.PostAsync(LOGIN_URL, new FormUrlEncodedContent(formData));
 			if(!loginResponse.IsSuccessStatusCode) {
-				return "";
+				return 0;
 			}
-			HttpResponseMessage globalFeedResponse = await _client.GetAsync(GLOBAL_ACTIVITY);
-			globalFeedResponse.EnsureSuccessStatusCode();
-			try {
-				string json = await globalFeedResponse.Content.ReadAsStringAsync();
-				var globalFeed = JsonConvert.DeserializeAnonymousType(json, new {
-					logged_in = false,
-					success = false,
-				});
-				//Reporting us as not logged in.
-				if(!globalFeed.logged_in||!globalFeed.success) {
-					return "";
-				}
+			HttpResponseMessage userDashboard = await _client.GetAsync(USER_DASHBOARD);
+			if(!userDashboard.IsSuccessStatusCode) {
+				return 0;
 			}
-			catch(Exception e) {
-				//TODO: log.
-				//Couldn't deserialize the JSON meaning the login failed.
-				return "";
+			//Unfortunately this is how they transmit the needed information.
+			string html = await userDashboard.Content.ReadAsStringAsync();
+			Match match = Regex.Match(html, "var BC_USER_ID = ([0-9]*);");
+			if(match == null) {
+				return 0;
 			}
-			return HttpUtils.GetSetCookieParams(loginResponse)
-				.Where(x => x.Name==SESSION_ID_KEY)
-				.Select(x => x.Value)
-				.FirstOrDefault()??"";
+			long.TryParse(match.Groups[1].Value, out long userId);
+			return userId + 1;
 		}
 
 		///<summary>Returns the borrowing object for the logged in user. Will return null if any part of the object fails.</summary>
@@ -136,9 +121,9 @@ namespace WcclsCore {
 
 		///<summary>Returns the borrowing object for the logged in user. Will return null if any part of the object fails.</summary>
 		///<returns>The borrowing object. Null if a failure occurs.</returns>
-		public async Task<FinesResult> GetFines(string accountId) {
+		public async Task<FinesResult> GetFines(long userId) {
 			_client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
-			HttpResponseMessage message = await _client.GetAsync($"{FINES_URL}?accountId={accountId}&locale=en-US");
+			HttpResponseMessage message = await _client.GetAsync($"{FINES_URL}?accountId={userId}&locale=en-US");
 			if(!message.IsSuccessStatusCode) {
 				return null;
 			}
@@ -181,10 +166,10 @@ namespace WcclsCore {
 		}
 
 		///<summary>Returns all hold information for the given account.</summary>
-		///<param name="accountId">The account ID.</param>
+		///<param name="userId">The account ID.</param>
 		///<returns>The hold information. If null, something went wrong.</returns>
-		public async Task<HoldsResult> GetHolds(string accountId) {
-			HttpResponseMessage response = await _client.GetAsync($"{HOLDS_URL}?accountId={accountId}&size=25&locale=en-US");
+		public async Task<HoldsResult> GetHolds(long userId) {
+			HttpResponseMessage response = await _client.GetAsync($"{HOLDS_URL}?accountId={userId}&size=25&locale=en-US");
 			string json = await response.Content.ReadAsStringAsync();
 			Dictionary<T ,V> CreateAnonymousDictionary<T, V>(T firstType ,V anonymousType) {
 				return new Dictionary<T ,V>();
@@ -264,11 +249,11 @@ namespace WcclsCore {
 			}
 		}
 
-		public async Task<CheckedOutResult> GetCheckedOut(string accountId) {
-			if(string.IsNullOrWhiteSpace(accountId)) {
-				throw new ArgumentException(nameof(accountId));
+		public async Task<CheckedOutResult> GetCheckedOut(long userId) {
+			if(userId <= 0) {
+				throw new ArgumentException(nameof(userId));
 			}
-			HttpResponseMessage response = await _client.GetAsync($"{CHECKED_OUT_URL}?accountId={accountId}&size=25&locale=en-US");
+			HttpResponseMessage response = await _client.GetAsync($"{CHECKED_OUT_URL}?accountId={userId}&size=25&locale=en-US");
 			if(!response.IsSuccessStatusCode) {
 				return null;
 			}
@@ -345,14 +330,14 @@ namespace WcclsCore {
 
 		///<summary>Renews a list of checkout items.</summary>
 		///<param name="listCheckoutIds">The list of checked out items that should be renewed.</param>
-		///<param name="accountId">The account id for this account.</param>
+		///<param name="userId">The account id for this account.</param>
 		///<returns>A result per checkout id.</returns>
-		public async Task<RenewItemsResult> RenewItems(List<string> listCheckoutIds, string accountId) {
+		public async Task<RenewItemsResult> RenewItems(List<string> listCheckoutIds, long userId) {
 			if(listCheckoutIds == null || listCheckoutIds.Count == 0) {
-				throw new ArgumentException(accountId);
+				throw new ArgumentException(nameof(userId));
 			}
 			HttpResponseMessage response = await _client.PatchAsync($"{CHECKED_OUT_URL}?locale=en-US", new StringContent(JsonConvert.SerializeObject(new {
-				accountId,
+				userId,
 				checkoutIds = listCheckoutIds,
 				renew = true,
 			}),Encoding.UTF8,"application/json"));

@@ -10,3 +10,15 @@
 /Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.csproj.CopyComplete
 /Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.dll
 /Users/lukemiletta/Documents/Wccls/WcclsCore/obj/Debug/netstandard2.1/WcclsCore.pdb
+C:\Users\lukem\source\repos\Wccls\WcclsCore\bin\Debug\netstandard2.1\WcclsCore.deps.json
+C:\Users\lukem\source\repos\Wccls\WcclsCore\bin\Debug\netstandard2.1\WcclsCore.dll
+C:\Users\lukem\source\repos\Wccls\WcclsCore\bin\Debug\netstandard2.1\WcclsCore.pdb
+C:\Users\lukem\source\repos\Wccls\WcclsCore\bin\Debug\netstandard2.1\Core.dll
+C:\Users\lukem\source\repos\Wccls\WcclsCore\bin\Debug\netstandard2.1\Core.pdb
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.csprojAssemblyReference.cache
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.csproj.CoreCompileInputs.cache
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.AssemblyInfoInputs.cache
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.AssemblyInfo.cs
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.csproj.CopyComplete
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.dll
+C:\Users\lukem\source\repos\Wccls\WcclsCore\obj\Debug\netstandard2.1\WcclsCore.pdb

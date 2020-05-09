@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/lukemiletta/Documents/Wccls/WcclsApi/WcclsApi.csproj": {}
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApi\\WcclsApi.csproj": {}
   },
   "projects": {
-    "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj": {
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj",
+        "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj",
-        "packagesPath": "/Users/lukemiletta/.nuget/packages/",
-        "outputPath": "/Users/lukemiletta/Documents/Wccls/Core/obj/",
+        "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/lukemiletta/.config/NuGet/NuGet.Config"
+          "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -50,36 +56,42 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.200/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/lukemiletta/Documents/Wccls/WcclsApi/WcclsApi.csproj": {
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApi\\WcclsApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsApi/WcclsApi.csproj",
+        "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApi\\WcclsApi.csproj",
         "projectName": "WcclsApi",
-        "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsApi/WcclsApi.csproj",
-        "packagesPath": "/Users/lukemiletta/.nuget/packages/",
-        "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsApi/obj/",
+        "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApi\\WcclsApi.csproj",
+        "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsApi\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/lukemiletta/.config/NuGet/NuGet.Config"
+          "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj": {
-                "projectPath": "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj"
+              "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj"
               },
-              "/Users/lukemiletta/Documents/Wccls/WcclsCore/WcclsCore.csproj": {
-                "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsCore/WcclsCore.csproj"
+              "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj": {
+                "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj"
               }
             }
           }
@@ -92,6 +104,12 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -110,33 +128,39 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.200/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/lukemiletta/Documents/Wccls/WcclsCore/WcclsCore.csproj": {
+    "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lukemiletta/Documents/Wccls/WcclsCore/WcclsCore.csproj",
-        "projectName": "WcclsCore",
-        "projectPath": "/Users/lukemiletta/Documents/Wccls/WcclsCore/WcclsCore.csproj",
-        "packagesPath": "/Users/lukemiletta/.nuget/packages/",
-        "outputPath": "/Users/lukemiletta/Documents/Wccls/WcclsCore/obj/",
+        "projectUniqueName": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj",
+        "projectName": "Core.Wccls",
+        "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\Core.Wccls.csproj",
+        "packagesPath": "C:\\Users\\lukem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\WcclsCore\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/lukemiletta/.config/NuGet/NuGet.Config"
+          "C:\\Users\\lukem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
             "projectReferences": {
-              "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj": {
-                "projectPath": "/Users/lukemiletta/Documents/Wccls/Core/Core.csproj"
+              "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\lukem\\source\\repos\\Wccls\\Core\\Core.csproj"
               }
             }
           }
@@ -178,7 +202,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.200/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
