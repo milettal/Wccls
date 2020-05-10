@@ -24,7 +24,7 @@
         BackgroundColor="White"
         Padding="20">
         <Label
-            Text="Username/Cardnumber" />
+            Text="Username/Card Number" />
         <Entry
             IsTextPredictionEnabled="False"
             IsSpellCheckEnabled="False"

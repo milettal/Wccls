@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WcclsApi.DependencyInjection;
-using WcclsCore;
 using WcclsCore.Models;
 using WcclsCore.Models.Request;
 using WcclsCore.Models.Result;
@@ -14,8 +13,6 @@ namespace WcclsApi.Controllers {
 	[Route("[controller]")]
 	[Authorize]
 	public class AccountController : ControllerBase {
-
-		private const string PAYMENT_URL = "https://1811.ecs.envisionware.net/eCommerceWebModule/Home";
 
 		private ISessionInfo _sessionInfo { get; }
 
@@ -94,13 +91,6 @@ namespace WcclsApi.Controllers {
 			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client);
 			RenewItemsResult result = await scraping.RenewItems(request.ListCheckoutIds, _sessionInfo.UserId);
 			return Ok(result);
-		}
-
-		///<summary>Returns the URL for making payments. This is an API call in case the URL is changed.</summary>
-		[HttpGet]
-		[Route("payment/url")]
-		public string GetPaymentUrl() {
-			return PAYMENT_URL;
 		}
 	}
 }

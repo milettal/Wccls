@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Core.Wccls.Models.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WcclsApi.DependencyInjection;
@@ -13,6 +14,8 @@ namespace WcclsApi.Controllers {
 	[Route("[controller]")]
 	[AllowAnonymous]
 	public class LoginController : ControllerBase {
+
+		private const string PAYMENT_URL = "https://1811.ecs.envisionware.net/eCommerceWebModule/Home";
 
 		private ISessionCache _sessionCache { get; }
 
@@ -30,12 +33,12 @@ namespace WcclsApi.Controllers {
 			CookieContainer container = new CookieContainer();
 			using HttpClient client = new HttpClient(new HttpClientHandler { CookieContainer = container });
 			WcclsWebScraping scraping = new WcclsWebScraping(client);
-			long userId = await scraping.Login(request.Username, request.Password);
+			(long userId, string username) = await scraping.Login(request.Username, request.Password);
 			if(userId <= 0) {
 				return BadRequest("Invalid Username or Password.");
 			}
 			string sessionGuid = _sessionCache.AddSession(container, userId);
-			return Ok(sessionGuid);
+			return Ok(new LoginResult { Username = username, SessionId = sessionGuid, PaymentUrl = PAYMENT_URL });
 		}
 	}
 

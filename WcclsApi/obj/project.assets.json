@@ -893,7 +893,7 @@
       },
       "Core.Wccls/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v2.1",
+        "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Core": "1.0.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",

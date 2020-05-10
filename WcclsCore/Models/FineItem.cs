@@ -15,7 +15,7 @@ namespace WcclsCore.Models {
 		///<summary>The time the custom message was added.</summary>
 		public DateTime? MessageDate { get; set; }
 		///<summary>The date that the item related to this fine was orignally due.</summary>
-		public DateTime? dueDate { get; set; }
+		public DateTime? DueDate { get; set; }
 		///<summary>The date that item related to this fine was renewed.</summary>
 		public DateTime? RenewedDate { get; set; }
 		///<summary>The date that this item was returned.</summary>
@@ -33,11 +33,9 @@ namespace WcclsCore.Models {
 		///<summary>The ID for the item that this fine was about.</summary>
 		public string MetadataId { get; set; }
 		///<summary>The title for the item that this fine was about.</summary>
-		[JsonProperty("bibTitle")]
-		public string Title { get; set; }
+		public string Bibtitle { get; set; }
 		///<summary>The subtitle for the item that this fine was about. May be blank.</summary>
-		[JsonProperty("bibSubtitle")]
-		public string Subtitle { get; set; }
+		public string Bibsubtitle { get; set; }
 
 	}
 

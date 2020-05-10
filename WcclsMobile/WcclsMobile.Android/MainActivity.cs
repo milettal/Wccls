@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using FFImageLoading.Forms.Platform;
 using Prism;
 using Prism.Ioc;
@@ -15,6 +16,7 @@ namespace WcclsMobile.Droid {
 
             base.OnCreate(bundle);
 
+            Xamarin.Essentials.Platform.Init(this, bundle);
             Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
             Popup.Init(this, bundle);
@@ -24,6 +26,11 @@ namespace WcclsMobile.Droid {
 
 		public override void OnBackPressed() {
             Popup.SendBackPressed(base.OnBackPressed);
+		}
+
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults) {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+			base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
 	}
 

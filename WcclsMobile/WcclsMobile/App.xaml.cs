@@ -36,6 +36,8 @@ namespace WcclsMobile {
 			containerRegistry.RegisterForNavigation<MenuPage, MenuPageVM>();
 			containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageVM>();
 			containerRegistry.RegisterForNavigation<AddUser, AddUserVM>();
+			containerRegistry.RegisterForNavigation<AccountDetailPage, AccountDetailPageVM>();
+			containerRegistry.RegisterForNavigation<FinesDetailsPage, FinesDetailsPageVM>();
 			containerRegistry.RegisterSingleton<IUserAuthenticationService, UserAuthenticationService>();
 			containerRegistry.RegisterSingleton<IWcclsApiService, WcclsApiService>();
 			containerRegistry.RegisterPopupNavigationService();

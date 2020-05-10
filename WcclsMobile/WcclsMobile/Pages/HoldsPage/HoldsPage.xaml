@@ -14,6 +14,7 @@
     <StackLayout>      
         <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
             <Label
+                Margin="15"
                 HorizontalTextAlignment="Center"
                 VerticalTextAlignment="Center"
                 HorizontalOptions="Center"

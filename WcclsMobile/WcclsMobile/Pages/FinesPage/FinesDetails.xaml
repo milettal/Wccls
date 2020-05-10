@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    x:Class="WcclsMobile.Pages.FinesDetails">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:NumberToDollarDisplayConverter x:Key="NumberToDollarDisplayConverter" />
+            <converters:StringIsNotNullOrEmpty x:Key="StringIsNotNullOrEmpty" />
+            <converters:ToShortDateConverter x:Key="ToShortDateConverter" />
+            <converters:IsNumberEqualConverter x:Key="IsNumberEqualConverter" />
+            <converters:IsNumberNotEqualConverter x:Key="IsNumberNotEqualConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <StackLayout Margin="15">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+            <Frame
+                x:Name="_frameDue"
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalOptions="Start"
+                VerticalOptions="Start"
+                HasShadow="False"
+                Padding="5"
+                Margin="0"
+                CornerRadius="3">
+                <Frame.Triggers>
+                    <DataTrigger
+                        TargetType="Frame"
+                        Binding="{Binding Fines.TotalFines,Converter={StaticResource IsNumberEqualConverter},ConverterParameter=0}"
+                        Value="False">
+                        <Setter Property="BackgroundColor" Value="DarkRed" />
+                    </DataTrigger>
+                    <DataTrigger
+                        TargetType="Frame"
+                        Binding="{Binding Fines.TotalFines,Converter={StaticResource IsNumberEqualConverter},ConverterParameter=0}"
+                        Value="True">
+                        <Setter Property="BackgroundColor" Value="Green" />
+                    </DataTrigger>
+                </Frame.Triggers>
+                <Label
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Fines.TotalFines,Converter={StaticResource NumberToDollarDisplayConverter}}" />
+                            <Span Text=" due" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Frame>
+            <!-- For whatever reason, this button looks weird when the row is set to Auto. When setting to *, it works fine. But then
+                when this button is hidden, the other frame looks weird. The solution for now is to bind the buttons hight to the "due" frame's height. -->
+            <Button
+                Grid.Column="1"
+                Grid.Row="0"
+                HeightRequest="{Binding Source={x:Reference _frameDue},Path=Height}"
+                Padding="4"
+                Margin="0"
+                IsVisible="{Binding Fines.TotalFines,Converter={StaticResource IsNumberNotEqualConverter},ConverterParameter=0}"
+                Command="{Binding MakeAPaymentCommand}"
+                BackgroundColor="Accent"
+                TextColor="White"
+                Text="Make a Payment" />
+        </Grid>
+        <BoxView
+            HorizontalOptions="FillAndExpand"
+            HeightRequest="1"
+            Color="LightGray" />
+        <CollectionView
+            SelectionMode="None"
+            ItemsSource="{Binding Fines.ListFines}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout
+                        Margin="0,0,0,5">
+                        <Frame
+                            HasShadow="False"
+                            Padding="10"
+                            BorderColor="LightGray">
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout
+                                    Spacing="0"
+                                    Grid.Column="0">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        Text="{Binding Bibtitle}" />
+                                    <Label
+                                        IsVisible="{Binding Bibsubtitle,Converter={StaticResource StringIsNotNullOrEmpty}}"
+                                        FontAttributes="Italic"
+                                        Text="{Binding Bibsubtitle}" />
+                                    <Label
+                                        Margin="0,5,0,0">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Checked out on " />
+                                                <Span Text="{Binding CheckedOutDate,Converter={StaticResource ToShortDateConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Due by " />
+                                                <Span Text="{Binding DueDate,Converter={StaticResource ToShortDateConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <Label
+                                    Grid.Column="1"
+                                    VerticalOptions="Start"
+                                    Margin="0,0,15,0"
+                                    Text="{Binding Description}" />
+                                <Label
+                                    Grid.Column="2"
+                                    VerticalOptions="Start"
+                                    Text="{Binding Amount,Converter={StaticResource NumberToDollarDisplayConverter}}" />
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>    
+    </StackLayout>
+</ContentView>

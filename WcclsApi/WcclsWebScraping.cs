@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using WcclsCore.Models;
 using WcclsCore.Models.Result;
 
-namespace WcclsCore {
+namespace WcclsApi {
 
 	public class WcclsWebScraping {
 
@@ -44,7 +44,7 @@ namespace WcclsCore {
 		///<param name="password">The password for this account.</param>
 		///<exception cref="ArgumentException">Thrown if the username or password are blank.</exception>
 		///<returns>The users id.</returns>
-		public async Task<long> Login(string username, string password) {
+		public async Task<(long userId, string username)> Login(string username, string password) {
 			if(string.IsNullOrWhiteSpace(username)) {
 				throw new ArgumentException("Username is required." ,nameof(username));
 			}
@@ -52,29 +52,34 @@ namespace WcclsCore {
 				throw new ArgumentException("Password is required." ,nameof(password));
 			}
 			Dictionary<string, string> formData = new Dictionary<string, string>();
-			formData["utf8"]="✓";
-			formData["name"]=username;
-			formData["user_pin"]=password;
-			formData["local"]="false";
+			formData["utf8"] = "✓";
+			formData["name"] = username;
+			formData["user_pin"] = password;
+			formData["local"] = "false";
 			HttpResponseMessage loginResponse = await _client.PostAsync(LOGIN_URL, new FormUrlEncodedContent(formData));
 			if(!loginResponse.IsSuccessStatusCode) {
-				return 0;
+				return (0, "");
 			}
 			HttpResponseMessage userDashboard = await _client.GetAsync(USER_DASHBOARD);
 			if(!userDashboard.IsSuccessStatusCode) {
-				return 0;
+				return (0, "");
 			}
 			//Unfortunately this is how they transmit the needed information.
 			string html = await userDashboard.Content.ReadAsStringAsync();
 			Match match = Regex.Match(html, "var BC_USER_ID = ([0-9]*);");
 			if(match == null) {
-				return 0;
+				return (0, "");
 			}
 			long.TryParse(match.Groups[1].Value, out long userId);
 			if(userId == 0) {
-				return 0;
+				return (0, "");
 			}
-			return userId + 1;
+			userId++;
+			match = Regex.Match(html, "var BC_USERNAME = \"([A-Za-z0-9]*)\";");
+			if(match == null) {
+				return (userId, "");
+			}
+			return (userId, match.Groups[1].Value);
 		}
 
 		///<summary>Returns the borrowing object for the logged in user. Will return null if any part of the object fails.</summary>
@@ -233,8 +238,8 @@ namespace WcclsCore {
 						AvailableCopies = bib.availability.availableCopies,
 						TotalCopies = bib.availability.totalCopies,
 						ListActions = holdData.Value.actions.Select(x => {
-							Enum.TryParse(x??"",true,out ItemAction result);
-							return result;
+							Enum.TryParse(x??"",true,out ItemAction ac);
+							return ac;
 						}).Where(x => x != ItemAction.Unknown).ToList(),
 						PickupLocation = LibraryParser.GetLibaryByCode(holdData.Value.pickupLocation.code),
 						Item = GetItemFromBib(bib),

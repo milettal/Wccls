@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin" xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     Title="Accounts"
     x:Class="WcclsMobile.Pages.AccountsPage">
     <ContentPage.Resources>
@@ -21,21 +21,39 @@
         <StackLayout
             IsVisible="{Binding ListUsers,Converter={StaticResource IsCollectionNullOrEmpty}}">
             <Label
+                Margin="0,15,0,0"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 FontSize="Medium"
-                Text="No account logged in." />
+                Text="Nothing to show here." />
         </StackLayout>
         <CollectionView
+            x:Name="_collectionView"
             ItemsSource="{Binding ListUsers}"
             SelectionMode="Single"
+            SelectedItem="{Binding SelectedUser}"
+            SelectionChangedCommand="{Binding UserSelectedCommand}"
+            SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionView}, Path=SelectedItem}"
             IsVisible="{Binding ListUsers,Converter={StaticResource IsCollectionNotNullOrEmpty}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Label
-                        Padding="10"
-                        FontSize="Large"
-                        Text="{Binding Nickname}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ffimageLoading:SvgCachedImage
+                            Margin="10,0,0,0"
+                            Grid.Column="0"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            Source="resource://WcclsMobile.Images.person-24px.svg" />
+                        <Label
+                            Grid.Column="1"
+                            Padding="10"
+                            FontSize="Large"
+                            Text="{Binding Nickname}" />
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

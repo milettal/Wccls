@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:modularity="http://prismlibrary.com"
+    Title="{Binding Nickname}"
+    x:Class="WcclsMobile.Pages.AccountDetailPage">
+    <Frame
+        Margin="10"
+        HasShadow="True"
+        VerticalOptions="Start"
+        HorizontalOptions="Center"
+        Padding="15">
+        <StackLayout>
+            <Grid
+                HorizontalOptions="Center"
+                ColumnSpacing="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    HorizontalTextAlignment="End"
+                    FontSize="Medium"
+                    FontAttributes="Bold"
+                    Text="Username:" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    HorizontalTextAlignment="Start"
+                    FontSize="Medium"
+                    Text="{Binding User.Username}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    HorizontalTextAlignment="End"
+                    FontSize="Medium"
+                    FontAttributes="Bold"
+                    Text="Nickname:" />
+                <Entry
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    WidthRequest="150"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    FontSize="Medium"
+                    Text="{Binding Nickname}">
+                    <Entry.Behaviors>
+                        <modularity:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding NicknameChangedCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+            <Button
+                BackgroundColor="Accent"
+                TextColor="White"
+                Text="Remove Account"
+                Command="{Binding RemoveAccountCommand}"/>
+        </StackLayout>
+    </Frame>
+</ContentPage>

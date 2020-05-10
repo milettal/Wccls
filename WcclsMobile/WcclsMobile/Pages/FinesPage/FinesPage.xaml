@@ -2,33 +2,89 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin" xmlns:pages="clr-namespace:WcclsMobile.Pages" xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
     Title="Fines"
     IconImageSource="baseline_attach_money_white_48.png"
     x:Class="WcclsMobile.Pages.FinesPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:IsCollectionCountEqual x:Key="IsCollectionCountEqual" />
+            <converters:IsCollectionCountNotEqual x:Key="IsCollectionCountNotEqual" />
+            <converters:NumberToDollarDisplayConverter x:Key="NumberToDollarDisplayConverter" />
+            <converters:CollectionItemAtIndexConverter x:Key="CollectionItemAtIndexConverter" />
+            <converters:StringIsNotNullOrEmpty x:Key="StringIsNotNullOrEmpty" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <StackLayout>      
-        <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
-            <Label
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="Center"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontSize="Medium"
-                Text="Please login to an account to use this feature." />
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding RefreshCommand}"
+            IconImageSource="baseline_refresh_white_24.png"/>
+    </ContentPage.ToolbarItems>
+    <AbsoluteLayout>
+        <forms:AnimationView
+            AbsoluteLayout.LayoutBounds="0.5,0,50,50"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            IsVisible="{Binding IsLoadingFines}"
+            Animation="315-loader-ring.json"
+            Loop="True"
+            IsPlaying="True" />
+        <StackLayout
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+            <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
+                <Label
+                    Margin="15"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    FontSize="Medium"
+                    Text="Please login to an account to use this feature." />
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsUserLoggedIn}">
+                <Label
+                    IsVisible="{Binding Errors,Converter={StaticResource StringIsNotNullOrEmpty}}"
+                    TextColor="Red"
+                    HorizontalTextAlignment="Center"
+                    FontSize="Medium"
+                    Text="{Binding Errors}" />
+                <!-- There is only one user logged in. Because of this, we will simply show the users fines. -->
+                <StackLayout IsVisible="{Binding ListUserFines,Converter={StaticResource IsCollectionCountEqual},ConverterParameter='1'}">
+                    <pages:FinesDetails
+                        BindingContext="{Binding ListUserFines,Converter={StaticResource CollectionItemAtIndexConverter},ConverterParameter='0'}"/>
+                </StackLayout>
+                <!-- We have two or more accounts. Instead we will show a list of users with fine summaries. Clicking on one will let the user view
+                    the fines up close for each account. -->
+                <StackLayout IsVisible="{Binding ListUserFines,Converter={StaticResource IsCollectionCountNotEqual},ConverterParameter='1'}">
+                    <CollectionView
+                        x:Name="_collectionViewUserFines"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedUserFines}"
+                        ItemsSource="{Binding ListUserFines}"
+                        SelectionChangedCommand="{Binding UserFinesSelectedCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionViewUserFines}, Path=SelectedItem}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        Grid.Column="0"
+                                        FontSize="Large"
+                                        Text="{Binding User.Nickname}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="Large"
+                                        Text="{Binding Fines.TotalFines, Converter={StaticResource NumberToDollarDisplayConverter}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
-        <StackLayout IsVisible="{Binding IsUserLoggedIn}">
-            <Label
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="Center"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontSize="Large"
-                Text="Logged In!" />
-        </StackLayout>
-    </StackLayout>
+    </AbsoluteLayout>
 </ContentPage>

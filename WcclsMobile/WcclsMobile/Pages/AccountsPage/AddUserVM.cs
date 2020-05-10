@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using Core.Wccls.Models.Result;
 using Core.Xamarin.MVVM;
 using Prism.Events;
 using Prism.Navigation;
@@ -52,12 +54,15 @@ namespace WcclsMobile.Pages {
 			if(string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password)) {
 				return;
 			}
-			if(_userService.GetLoggedInUsers().Any(x => x.Username == Username)) {
-				await _pageDialogService.DisplayAlertAsync("Error", "A user with this username/card number is already logged in.", "Ok");
+			Task ShowDuplicationUserError() {
+				return _pageDialogService.DisplayAlertAsync("Error", "A user with this username/card number is already logged in.", "Ok");
+			}
+			if(_userService.GetLoggedInUsers().Any(x => x.Username.ToLower() == Username.ToLower())) {
+				await ShowDuplicationUserError();
 				return;
 			}
 			IsLoggingIn = true;
-			(string error, string sessionId) = await _apiService.Login(Username,Password);
+			(string error, LoginResult result) = await _apiService.Login(Username,Password);
 			IsLoggingIn = false;
 			//We were cancelled. Don't show or do anything.
 			if(_canellationToken.IsCancellationRequested) {
@@ -67,11 +72,15 @@ namespace WcclsMobile.Pages {
 				await _pageDialogService.DisplayAlertAsync("Error", error, "Ok");
 				return;
 			}
+			if(_userService.GetLoggedInUsers().Any(x => x.Username.ToLower() == result.Username.ToLower())) {
+				await ShowDuplicationUserError();
+				return;
+			}
 			await _navigationService.ClearPopupStackAsync(NEWUSER_KEY, new User {
-				Nickname = Username,
-				Username = Username,
+				Nickname = result.Username.ToLower(),
+				Username = result.Username.ToLower(),
 				Password = Password,
-				SessionId = sessionId,
+				SessionId = result.SessionId,
 			});
 		},() => !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password));
 

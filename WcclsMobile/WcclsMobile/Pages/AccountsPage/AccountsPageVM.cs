@@ -27,6 +27,12 @@ namespace WcclsMobile.Pages {
 			set { SetBindableProperty(() => ListUsers, value); }
 		}
 
+		///<summary>The currently selected user. Used to programatically lose retention after the initial click.</summary>
+		public User SelectedUser {
+			get { return null; }
+			set { RaisePropertyChanged(() => SelectedUser); }
+		}
+
 		public AccountsPageVM(INavigationService navigationService, IWcclsApiService apiService, IUserAuthenticationService userService, IEventAggregator aggregator)
 			: base(navigationService)
 		{
@@ -45,16 +51,22 @@ namespace WcclsMobile.Pages {
 			}
 			if(parameters.ContainsKey(AddUserVM.NEWUSER_KEY)) {
 				User user = parameters.GetValue<User>(AddUserVM.NEWUSER_KEY);
+				//This call will handle eventing which will refresh this view and others.
 				await _userService.SaveUserAccount(user);
-				//Let all other views know that the number of accounts have been changed.
-				//This will also refresh this views list.
-				_eventAggregator.GetEvent<AccountsChangedEvent>().Publish();
 			}
 		}
 
 		///<summary>Command for attempting to add a new user.</summary>
 		public IAsyncCommand AddAccountCommand => GetCommandAsync(() => AddAccountCommand, true, async () => {
 			await _navigationService.NavigateAsync(nameof(AddUser));
+		});
+
+		///<summary>Command that occurs when a user is selected. This should take the user to the account detail page.</summary>
+		public IAsyncCommand<User> UserSelectedCommand => GetCommandAsync(() => UserSelectedCommand, true, async (user) => {
+			if(user == null) {
+				return;
+			}
+			await _navigationService.NavigateAsync(nameof(AccountDetailPage), (AccountDetailPageVM.USER_KEY, user));
 		});
 
 		///<summary>Loads the users from the user service.</summary>
