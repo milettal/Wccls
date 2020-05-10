@@ -1,14 +1,27 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Security;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace WcclsMobile.Services {
 
 	public class WcclsApiService : IWcclsApiService {
 
-		private const string API_URL = "https://10.0.2.2:5002";
+		private string API_URL = Device.RuntimePlatform == Device.Android ? "https://10.0.2.2:5002" : "https://localhost:5002";
 
-		private HttpClient _client { get; } = new HttpClient();
+		private HttpClient _client { get; }
+
+		public WcclsApiService() {
+			HttpClientHandler handler = new HttpClientHandler();
+			handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => {
+				if(cert.Issuer == "CN=localhost") {
+					return true;
+				}
+				return errors == SslPolicyErrors.None;
+			};
+			_client = new HttpClient(handler);
+		}
 
 		public async Task<(string error, string sessionGuid)> Login(string username, string password) {
 			HttpResponseMessage message;

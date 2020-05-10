@@ -24,7 +24,7 @@
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 FontSize="Medium"
-                Text="You can add a new user by clicking the + button." />
+                Text="No account logged in." />
         </StackLayout>
         <CollectionView
             ItemsSource="{Binding ListUsers}"
@@ -33,6 +33,8 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Label
+                        Padding="10"
+                        FontSize="Large"
                         Text="{Binding Nickname}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>

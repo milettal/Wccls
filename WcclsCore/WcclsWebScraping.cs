@@ -71,6 +71,9 @@ namespace WcclsCore {
 				return 0;
 			}
 			long.TryParse(match.Groups[1].Value, out long userId);
+			if(userId == 0) {
+				return 0;
+			}
 			return userId + 1;
 		}
 

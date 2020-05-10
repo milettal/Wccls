@@ -13,9 +13,8 @@ namespace WcclsMobile.Services {
 		///<summary>Intializes this service and pulls any cached credentials available.</summary>
 		Task InitializeService();
 
-		///<summary>Attempts to login with the given username and password and adds it to the stored credentials.
-		///Returns an error if something goes wrong.</summary>
-		Task<string> AddUserAccount(string username, string password);
+		///<summary>Saves the user account to secure storage. This user account should already be authenticated as valid.</summary>
+		Task SaveUserAccount(User user);
 
 		///<summary>Returns all currently logged in users.</summary>
 		List<User> GetLoggedInUsers();

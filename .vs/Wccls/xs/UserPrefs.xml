@@ -1,8 +1,24 @@
-﻿<Properties StartupConfiguration="{6422A971-C5C4-4C61-B0B0-1C15C4B7F0EE}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WcclsApi/Program.cs">
+﻿<Properties StartupConfiguration="Android and API">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WcclsMobile/WcclsMobile/Pages/AccountsPage/AccountsPage.xaml.cs">
     <Files>
-      <File FileName="WcclsMobile/WcclsMobile/Services/WcclsApiService.cs" Line="9" Column="56" />
-      <File FileName="WcclsApi/Program.cs" Line="13" Column="1" />
+      <File FileName="WcclsMobile/WcclsMobile/Services/WcclsApiService.cs" Line="40" Column="25" />
+      <File FileName="WcclsMobile/WcclsMobile/Services/IWcclsApiService.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Services/IUserAuthenticationService.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/AccountsPage/AddUser.xaml.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/AccountsPage/AddUser.xaml" />
+      <File FileName="WcclsMobile/WcclsMobile.Android/MainActivity.cs" />
+      <File FileName="WcclsApi/Controllers/LoginController.cs" />
+      <File FileName="WcclsCore/WcclsWebScraping.cs" />
+      <File FileName="WcclsApi/Program.cs" Line="7" Column="1" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/AccountsPage/AccountsPageVM.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/AccountsPage/AddUserVM.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Services/UserAuthenticationService.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Events/AccountsChangedEvent.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/CheckedOutPage/CheckedOutPageVM.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesPageVM.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsPageVM.cs" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/AccountsPage/AccountsPage.xaml" Line="30" Column="46" />
+      <File FileName="WcclsMobile/WcclsMobile/Pages/AccountsPage/AccountsPage.xaml.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,14 +26,31 @@
           <Node name="Wccls" expanded="True">
             <Node name="Mobile" expanded="True">
               <Node name="WcclsMobile" expanded="True">
+                <Node name="Dependencies" expanded="True">
+                  <Node name="PackageDependencies" expanded="True" />
+                </Node>
+                <Node name="Images" expanded="True" />
+                <Node name="Pages" expanded="True">
+                  <Node name="AccountsPage" expanded="True">
+                    <Node name="AccountsPage.xaml" expanded="True">
+                      <Node name="AccountsPage.xaml.cs" selected="True" />
+                    </Node>
+                  </Node>
+                </Node>
                 <Node name="Services" expanded="True" />
+              </Node>
+              <Node name="WcclsMobile.Android" expanded="True">
+                <Node name="Assets" expanded="True" />
               </Node>
             </Node>
             <Node name="Web" expanded="True">
               <Node name="WcclsApi" expanded="True">
-                <Node name="Properties" expanded="True" />
-                <Node name="Program.cs" selected="True" />
+                <Node name="Controllers" expanded="True" />
               </Node>
+            </Node>
+            <Node name="Core.Wccls" expanded="True" />
+            <Node name="Core.Xamarin" expanded="True">
+              <Node name="Controls" expanded="True" />
             </Node>
           </Node>
         </State>

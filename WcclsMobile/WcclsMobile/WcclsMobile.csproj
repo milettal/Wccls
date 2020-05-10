@@ -11,6 +11,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Prism.Plugin.Popups" Version="7.2.0.1046" />
+    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="3.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
     <Folder Include="Services\" />
     <Folder Include="Pages\AccountsPage\" />
     <Folder Include="Models\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Images\settings-24px.svg" />

@@ -3,11 +3,16 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
     Padding="75,0"
     WidthRequest="250"
     CloseWhenBackgroundIsClicked="False"
     x:Class="WcclsMobile.Pages.AddUser">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
             ScaleIn="1"
@@ -43,8 +48,19 @@
             <Button
                 Grid.Column="1"
                 Text="Login"
+                IsVisible="{Binding IsLoggingIn,Converter={StaticResource InverseBoolConverter}}"
                 IsEnabled="{Binding CanLogIn}"
-                Command="{Binding AddUserCommand}" />
+                Command="{Binding AddUserCommand}" />     
+            <forms:AnimationView
+                Grid.Column="1"
+                IsVisible="{Binding IsLoggingIn}"
+                WidthRequest="50"
+                HeightRequest="50"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Animation="315-loader-ring.json"
+                Loop="True"
+                IsPlaying="True" />
         </Grid>
     </StackLayout>
 </pages:PopupPage>
