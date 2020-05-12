@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Core.Xamarin.Controls;assembly=Core.Xamarin"
+    xmlns:localconverters="clr-namespace:WcclsMobile.Converters"
+    x:Class="WcclsMobile.Pages.HoldOptionsPopupPage">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <localconverters:LibraryToLibraryNameConverter x:Key="LibraryToLibraryNameConverter" />
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <Frame
+        x:Name="_frameOptions"
+        Margin="30"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        BackgroundColor="White">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackLayout
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Grid.Row="0"
+                IsVisible="{Binding CanUserChangePickupLocation}">
+                <Label
+                    FontSize="Medium"
+                    Text="Pickup Location: " />
+                <controls:BindablePicker
+                    SelectedItem="{Binding LibraryCur}"
+                    DisplayMemberConverter="{StaticResource LibraryToLibraryNameConverter}"
+                    ItemSelectedCommand="{Binding LibraryChangedCommand}"
+                    ItemsSource="{Binding ListPossibleLibraries}" />
+            </StackLayout>
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                IsVisible="{Binding CanUserSuspendHold}"
+                BackgroundColor="Accent"
+                Command="{Binding SuspendHoldCommand}"
+                Text="Pause Hold" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                IsVisible="{Binding CanUserCancelHold}"
+                BackgroundColor="IndianRed"
+                Command="{Binding CancelHoldCommand}"
+                Text="Cancel Hold" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                Padding="0"
+                Margin="0"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                BackgroundColor="{Binding Source={x:Reference _frameOptions},Path=BackgroundColor}"
+                Command="{Binding CloseCommand}"
+                Text="Close" />
+        </Grid>
+    </Frame>
+</pages:PopupPage>

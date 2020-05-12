@@ -13,6 +13,9 @@
         SelectionChangedCommand="{Binding MenuItemSelectedCommand}"
         SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionView}, Path=SelectedItem}"
         ItemsSource="{Binding ListMenuItems}">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout Orientation="Vertical" />
+        </CollectionView.ItemsLayout>
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <Grid ColumnSpacing="0">

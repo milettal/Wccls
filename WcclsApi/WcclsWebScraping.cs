@@ -1,4 +1,6 @@
 ﻿using Core;
+using Core.Wccls.Models.Result;
+using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,11 +34,15 @@ namespace WcclsApi {
 		private const string HOLDS_URL = "https://gateway.bibliocommons.com/v2/libraries/wccls/holds";
 		///<summary>The URL for getting checked out items.</summary>
 		private const string CHECKED_OUT_URL = "https://gateway.bibliocommons.com/v2/libraries/wccls/checkouts";
+		///<summaryThe status that indicates a hold is ready for pickup.</summary>
+		private const string READY_FOR_PICKUP_KEY = "ready for pickup";
 		///<summary>The instance for this HttpClient.</summary>
 		private HttpClient _client { get; }
+		private ISystemClock _systemClock { get; }
 
-		public WcclsWebScraping(HttpClient client) {
+		public WcclsWebScraping(HttpClient client, ISystemClock systemClock) {
 			_client = client;
+			_systemClock = systemClock;
 		}
 
 		///<summary>Attempts to log the user in with the given username or password. If this fails, it will return an empty string.</summary>
@@ -46,16 +52,16 @@ namespace WcclsApi {
 		///<returns>The users id.</returns>
 		public async Task<(long userId, string username)> Login(string username, string password) {
 			if(string.IsNullOrWhiteSpace(username)) {
-				throw new ArgumentException("Username is required." ,nameof(username));
+				throw new ArgumentException("Username is required.", nameof(username));
 			}
 			if(string.IsNullOrWhiteSpace(password)) {
-				throw new ArgumentException("Password is required." ,nameof(password));
+				throw new ArgumentException("Password is required.", nameof(password));
 			}
 			Dictionary<string, string> formData = new Dictionary<string, string>();
-			formData["utf8"] = "✓";
-			formData["name"] = username;
-			formData["user_pin"] = password;
-			formData["local"] = "false";
+			formData["utf8"]="✓";
+			formData["name"]=username;
+			formData["user_pin"]=password;
+			formData["local"]="false";
 			HttpResponseMessage loginResponse = await _client.PostAsync(LOGIN_URL, new FormUrlEncodedContent(formData));
 			if(!loginResponse.IsSuccessStatusCode) {
 				return (0, "");
@@ -67,11 +73,11 @@ namespace WcclsApi {
 			//Unfortunately this is how they transmit the needed information.
 			string html = await userDashboard.Content.ReadAsStringAsync();
 			Match match = Regex.Match(html, "var BC_USER_ID = ([0-9]*);");
-			if(match == null) {
+			if(match==null) {
 				return (0, "");
 			}
 			long.TryParse(match.Groups[1].Value, out long userId);
-			if(userId == 0) {
+			if(userId==0) {
 				return (0, "");
 			}
 			userId++;
@@ -80,6 +86,64 @@ namespace WcclsApi {
 				return (userId, "");
 			}
 			return (userId, match.Groups[1].Value);
+		}
+
+		///<summary>Cancels the holds for the given hold ids and metadata ids.</summary>
+		public async Task CancelHolds(long userId, List<string> listHoldIds, List<string> listMetadataIds) {
+			HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Delete, $"{HOLDS_URL}?locale=en-US");
+			message.Content = new StringContent(JsonConvert.SerializeObject(new {
+				accountId = userId,
+				holdIds = listHoldIds.ToArray(),
+				metadataIds = listMetadataIds.ToArray(),
+			}), Encoding.UTF8, "application/json");
+			HttpResponseMessage response = await _client.SendAsync(message);
+			if(!response.IsSuccessStatusCode) {
+				throw new ApplicationException("Error: "+await response.Content.ReadAsStringAsync());
+			}
+		}
+
+		///<summary>A list of suspended holds to resume.</summary>
+		public async Task<ResumeHoldsResult> ResumeHolds(long userId, List<string> listHoldIds) {
+			HttpResponseMessage response = await _client.PatchAsync($"{HOLDS_URL}?locale=en-US",new StringContent(JsonConvert.SerializeObject(new {
+				accountId = userId,
+				holdIds = listHoldIds.ToArray(),
+				suspended = new {
+					status = false,
+				},
+			}),Encoding.UTF8,"application/json"));
+			if(!response.IsSuccessStatusCode) {
+				return null;
+			}
+			string json = await response.Content.ReadAsStringAsync();
+			try {
+				return new ResumeHoldsResult { Success = true };
+			}
+			catch(Exception e) {
+				return null;
+			}
+		}
+
+		///<summary>Pauses all the given holds.</summary>
+		public async Task<PauseHoldsResult> PauseHolds(long userId, List<string> listHoldIds, DateTime endDate, bool isCurrentlyActive) {
+			HttpResponseMessage response = await _client.PatchAsync($"{HOLDS_URL}?locale=en-US",new StringContent(JsonConvert.SerializeObject(new {
+				accountId = userId,
+				holdIds = listHoldIds.ToArray(),
+				suspended = new {
+					startDate = isCurrentlyActive ? _systemClock.UtcNow.LocalDateTime.ToShortDateString() : null,
+					endDate = endDate.ToLocalTime().ToShortDateString(),
+					status = true,
+				},
+			}),Encoding.UTF8,"application/json"));
+			if(!response.IsSuccessStatusCode) {
+				return null;
+			}
+			string json = await response.Content.ReadAsStringAsync();
+			try {
+				return new PauseHoldsResult { Success = true };
+			}
+			catch(Exception e) {
+				return null;
+			}
 		}
 
 		///<summary>Returns the borrowing object for the logged in user. Will return null if any part of the object fails.</summary>
@@ -139,7 +203,7 @@ namespace WcclsApi {
 			try {
 				var result = JsonConvert.DeserializeAnonymousType(json, new {
 					entities = new {
-						fines = new Dictionary<string,FineItem>(),
+						fines = new Dictionary<string, FineItem>(),
 					},
 					borrowing = new {
 						fines = new {
@@ -162,10 +226,10 @@ namespace WcclsApi {
 					},
 				});
 				return new FinesResult {
-					TotalAccrued=result?.borrowing?.summaries?.fines?.totalAccrued??0 ,
-					TotalFines=result?.borrowing?.summaries?.fines?.totalFines??0 ,
-					TotalCredits=result?.borrowing?.summaries?.fines?.totalCredits??0 ,
-					ListFines=result?.entities?.fines?.Select(x => x.Value)?.ToList()??new List<FineItem>() ,
+					TotalAccrued=result?.borrowing?.summaries?.fines?.totalAccrued??0,
+					TotalFines=result?.borrowing?.summaries?.fines?.totalFines??0,
+					TotalCredits=result?.borrowing?.summaries?.fines?.totalCredits??0,
+					ListFines=result?.entities?.fines?.Select(x => x.Value)?.ToList()??new List<FineItem>(),
 				};
 			}
 			catch(Exception) {
@@ -179,15 +243,15 @@ namespace WcclsApi {
 		public async Task<HoldsResult> GetHolds(long userId) {
 			HttpResponseMessage response = await _client.GetAsync($"{HOLDS_URL}?accountId={userId}&size=25&locale=en-US");
 			string json = await response.Content.ReadAsStringAsync();
-			Dictionary<T ,V> CreateAnonymousDictionary<T, V>(T firstType ,V anonymousType) {
-				return new Dictionary<T ,V>();
+			Dictionary<T, V> CreateAnonymousDictionary<T, V>(T firstType, V anonymousType) {
+				return new Dictionary<T, V>();
 			}
 			try {
 				#region DeserializeObject
 				var result = JsonConvert.DeserializeAnonymousType(json, new {
 					entities = new {
-						bibs = new Dictionary<string,Bib>(),
-						holds = CreateAnonymousDictionary("",new {
+						bibs = new Dictionary<string, Bib>(),
+						holds = CreateAnonymousDictionary("", new {
 							actions = new string[0],
 							metadataId = "",
 							holdsId = "",
@@ -230,26 +294,29 @@ namespace WcclsApi {
 						continue;
 					}
 					Bib bib = result.entities.bibs[holdData.Value.metadataId];
+					Enum.TryParse(holdData.Value.status, true, out HoldStatus holdStatus);
 					Hold hold = new Hold {
 						HoldId = holdData.Value.holdsId,
 						ExpiryDate = holdData.Value.expiryDate,
 						HoldPosition = holdData.Value.holdsPosition,
-						Status = holdData.Value.status,
-						AvailableCopies = bib.availability.availableCopies,
-						TotalCopies = bib.availability.totalCopies,
+						StatusStr = holdData.Value.status,
+						Status = holdStatus,
+						AvailableCopies = bib.availability.availableCopies ?? 0,
+						TotalCopies = bib.availability.totalCopies ?? 0,
 						ListActions = holdData.Value.actions.Select(x => {
-							Enum.TryParse(x??"",true,out ItemAction ac);
+							Enum.TryParse(x ?? "", true, out ItemAction ac);
 							return ac;
 						}).Where(x => x != ItemAction.Unknown).ToList(),
-						PickupLocation = LibraryParser.GetLibaryByCode(holdData.Value.pickupLocation.code),
+						PickupLocation = LibraryItemParser.GetLibaryByCode(holdData.Value.pickupLocation?.code),
 						Item = GetItemFromBib(bib),
 					};
 					listHolds.Add(hold);
 				}
 				return new HoldsResult {
-					ListHolds=listHolds ,
-					ActiveHolds=result.borrowing.summaries.holds.totalOperative ,
-					InactiveHolds=result.borrowing.summaries.inactiveHolds.totalOperative ,
+					ListHolds = listHolds,
+					ActiveHolds = result.borrowing.summaries.holds.totalOperative,
+					InactiveHolds = result.borrowing.summaries.inactiveHolds.totalOperative,
+					ReadyForPickup = listHolds.Count(x => x.Status == HoldStatus.Ready_For_Pickup),
 				};
 			}
 			catch(Exception e) {
@@ -257,22 +324,23 @@ namespace WcclsApi {
 			}
 		}
 
+		///<summary>Returns all of the items currently checked out to the user.</summary>
 		public async Task<CheckedOutResult> GetCheckedOut(long userId) {
-			if(userId <= 0) {
+			if(userId<=0) {
 				throw new ArgumentException(nameof(userId));
 			}
 			HttpResponseMessage response = await _client.GetAsync($"{CHECKED_OUT_URL}?accountId={userId}&size=25&locale=en-US");
 			if(!response.IsSuccessStatusCode) {
 				return null;
 			}
-			Dictionary<T ,V> CreateAnonymousDictionary<T, V>(T firstType ,V anonymousType) {
-				return new Dictionary<T ,V>();
+			Dictionary<T, V> CreateAnonymousDictionary<T, V>(T firstType, V anonymousType) {
+				return new Dictionary<T, V>();
 			}
 			try {
 				string json = await response.Content.ReadAsStringAsync();
 				var result = JsonConvert.DeserializeAnonymousType(json, new {
 					entities = new {
-						bibs = new Dictionary<string,Bib>(),
+						bibs = new Dictionary<string, Bib>(),
 						checkouts = CreateAnonymousDictionary("", new {
 							actions = new string[0],
 							checkoutId = "",
@@ -311,24 +379,24 @@ namespace WcclsApi {
 					Bib bib = result.entities.bibs[checkout.Value.metadataId];
 					DateTime.TryParse(checkout.Value.dueDate, out DateTime dueDate);
 					CheckedOutItem checkedOut = new CheckedOutItem {
-						Fines = checkout.Value.fines,
-						DueDate = dueDate,
-						Id = checkout.Value.checkoutId,
-						ListActions = checkout.Value.actions.Select(x => {
-							Enum.TryParse(x,true,out ItemAction action);
+						Fines=checkout.Value.fines,
+						DueDate=dueDate,
+						Id=checkout.Value.checkoutId,
+						ListActions=checkout.Value.actions.Select(x => {
+							Enum.TryParse(x, true, out ItemAction action);
 							return action;
-						}).Where(x => x != ItemAction.Unknown).ToList(),
-						Status = checkout.Value.status,
-						TimesRenewed = checkout.Value.timesRenewed,
-						LibraryItem = GetItemFromBib(bib),
+						}).Where(x => x!=ItemAction.Unknown).ToList(),
+						Status=checkout.Value.status,
+						TimesRenewed=checkout.Value.timesRenewed,
+						LibraryItem=GetItemFromBib(bib),
 					};
 					listItems.Add(checkedOut);
 				}
-				DateTime.TryParse(result?.borrowing?.summaries?.checkedout?.nextDue?.date??"",out DateTime nextDue);
+				DateTime.TryParse(result?.borrowing?.summaries?.checkedout?.nextDue?.date??"", out DateTime nextDue);
 				return new CheckedOutResult {
-					NextDueDate = nextDue == DateTime.MinValue ? (DateTime?)null : nextDue,
-					TotalCheckedOut = result?.borrowing?.summaries?.checkedout?.total??0,
-					ListCheckedOutItems = listItems,
+					NextDueDate=nextDue==DateTime.MinValue ? (DateTime?)null : nextDue,
+					TotalCheckedOut=result?.borrowing?.summaries?.checkedout?.total??0,
+					ListCheckedOutItems=listItems,
 				};
 			}
 			catch(Exception e) {
@@ -341,20 +409,20 @@ namespace WcclsApi {
 		///<param name="userId">The account id for this account.</param>
 		///<returns>A result per checkout id.</returns>
 		public async Task<RenewItemsResult> RenewItems(List<string> listCheckoutIds, long userId) {
-			if(listCheckoutIds == null || listCheckoutIds.Count == 0) {
+			if(listCheckoutIds==null||listCheckoutIds.Count==0) {
 				throw new ArgumentException(nameof(userId));
 			}
 			HttpResponseMessage response = await _client.PatchAsync($"{CHECKED_OUT_URL}?locale=en-US", new StringContent(JsonConvert.SerializeObject(new {
 				userId,
 				checkoutIds = listCheckoutIds,
 				renew = true,
-			}),Encoding.UTF8,"application/json"));
+			}), Encoding.UTF8, "application/json"));
 			if(!response.IsSuccessStatusCode) {
 				//All failed
 				return new RenewItemsResult {
-					DictionaryResponses = listCheckoutIds.ToDictionary(x => x,x => new RenewResult {
-						WasRenewed = false,
-						ErrorMessage = $"Bad Status Code: {(int)response.StatusCode} - {response.StatusCode}",
+					DictionaryResponses=listCheckoutIds.ToDictionary(x => x, x => new RenewResult {
+						WasRenewed=false,
+						ErrorMessage=$"Bad Status Code: {(int)response.StatusCode} - {response.StatusCode}",
 					}),
 				};
 			}
@@ -373,12 +441,12 @@ namespace WcclsApi {
 						}
 					},
 				});
-				Dictionary<string,RenewResult> dictResults = new Dictionary<string, RenewResult>();
+				Dictionary<string, RenewResult> dictResults = new Dictionary<string, RenewResult>();
 				//First add them all as successful.
 				foreach(string id in listCheckoutIds) {
-					dictResults[id] = new RenewResult { WasRenewed = true, ErrorMessage = "" };
+					dictResults[id]=new RenewResult { WasRenewed=true, ErrorMessage="" };
 				}
-				if(result?.failures != null) {
+				if(result?.failures!=null) {
 					foreach(var failure in result.failures) {
 						if(!dictResults.ContainsKey(failure?.id??"")) {
 							continue;
@@ -389,15 +457,15 @@ namespace WcclsApi {
 					}
 				}
 				return new RenewItemsResult {
-					DictionaryResponses = dictResults,
+					DictionaryResponses=dictResults,
 				};
 			}
 			catch(Exception e) {
 				//All failed
 				return new RenewItemsResult {
-					DictionaryResponses=listCheckoutIds.ToDictionary(x => x ,x => new RenewResult {
-						WasRenewed=false ,
-						ErrorMessage=$"Bad Status Code: {(int)response.StatusCode} - {response.StatusCode}" ,
+					DictionaryResponses=listCheckoutIds.ToDictionary(x => x, x => new RenewResult {
+						WasRenewed=false,
+						ErrorMessage=$"Bad Status Code: {(int)response.StatusCode} - {response.StatusCode}",
 					})
 				};
 			}
@@ -408,25 +476,26 @@ namespace WcclsApi {
 			if(bib == null) {
 				return null;
 			}
+			Enum.TryParse(bib.briefInfo.format ?? "", true, out ItemFormat format);
 			return new LibraryItem {
-				Id=bib.id ,
-				Edition=bib.briefInfo.edition ,
-				AverageRating=bib.briefInfo.rating.averageRating ,
-				TotalCount=bib.briefInfo.rating.totalCount ,
-				CallNumber=bib.briefInfo.callNumber ,
-				ContentType=bib.briefInfo.contentType ,
-				Description=bib.briefInfo.description ,
-				PublicationDate=bib.briefInfo.publicationDate ,
-				ListAuthors=bib.briefInfo.authors?.ToList() ,
-				SourceLibrary=LibraryParser.GetLibaryByCode(bib.sourceLibId.ToString()) ,
-				Format=bib.briefInfo.format ,
-				Subtitle=bib.briefInfo.subtitle ,
-				Title=bib.briefInfo.title ,
-				ListISBNs=bib.briefInfo.isbns?.ToList() ,
-				ImageResources=new ItemResources {
-					SmallUrl=bib.briefInfo.jacket.small ,
-					MediumUrl=bib.briefInfo.jacket.medium ,
-					LargeUrl=bib.briefInfo.jacket.large ,
+				Id = bib.id,
+				Edition = bib.briefInfo.edition,
+				AverageRating = bib.briefInfo.rating?.averageRating ?? 0,
+				TotalCount = bib.briefInfo.rating?.totalCount ?? 0,
+				CallNumber = bib.briefInfo.callNumber,
+				ContentType = bib.briefInfo.contentType,
+				Description = bib.briefInfo.description,
+				PublicationDate = bib.briefInfo.publicationDate,
+				ListAuthors = bib.briefInfo.authors?.ToList(),
+				SourceLibrary = LibraryItemParser.GetLibaryByCode(bib.sourceLibId.ToString()),
+				Format = format,
+				Subtitle = bib.briefInfo.subtitle,
+				Title = bib.briefInfo.title,
+				ListISBNs = bib.briefInfo.isbns?.ToList(),
+				ImageResources = new ItemResources {
+					SmallUrl = bib.briefInfo.jacket?.small ?? "",
+					MediumUrl = bib.briefInfo.jacket?.medium ?? "",
+					LargeUrl = bib.briefInfo.jacket?.large ?? "",
 				}
 			};
 		}
@@ -444,17 +513,17 @@ namespace WcclsApi {
 				public string availabilityLocationType { get; set; }
 				public string status { get; set; }
 				public string circulationType { get; set; }
-				public bool libraryUseOnly { get; set; }
-				public int heldCopies { get; set; }
-				public int availableCopies { get; set; }
-				public int totalCopies { get; set; }
-				public int onOrderCopies { get; set; }
-				public int volumesCount { get; set; }
+				public bool? libraryUseOnly { get; set; }
+				public int? heldCopies { get; set; }
+				public int? availableCopies { get; set; }
+				public int? totalCopies { get; set; }
+				public int? onOrderCopies { get; set; }
+				public int? volumesCount { get; set; }
 				public string localisedStatus { get; set; }
 				public string eresourceDescription { get; set; }
 				public string eresourceUrl { get; set; }
 				public string statusType { get; set; }
-				public bool singleBranch { get; set; }
+				public bool? singleBranch { get; set; }
 			}
 
 			public class BriefInfo {

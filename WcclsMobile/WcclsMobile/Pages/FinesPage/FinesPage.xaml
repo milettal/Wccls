@@ -64,6 +64,9 @@
                         ItemsSource="{Binding ListUserFines}"
                         SelectionChangedCommand="{Binding UserFinesSelectedCommand}"
                         SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionViewUserFines}, Path=SelectedItem}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="15">
@@ -73,11 +76,11 @@
                                     </Grid.ColumnDefinitions>
                                     <Label
                                         Grid.Column="0"
-                                        FontSize="Large"
+                                        FontSize="Medium"
                                         Text="{Binding User.Nickname}" />
                                     <Label
                                         Grid.Column="1"
-                                        FontSize="Large"
+                                        FontSize="Medium"
                                         Text="{Binding Fines.TotalFines, Converter={StaticResource NumberToDollarDisplayConverter}}" />
                                 </Grid>
                             </DataTemplate>

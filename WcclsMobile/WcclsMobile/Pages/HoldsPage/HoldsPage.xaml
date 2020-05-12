@@ -3,14 +3,23 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:pages="clr-namespace:WcclsMobile.Pages"
     Title="Holds"
     IconImageSource="baseline_pause_circle_outline_white_48.png"
     x:Class="WcclsMobile.Pages.HoldsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:IsCollectionCountEqual x:Key="IsCollectionCountEqual" />
+            <converters:IsCollectionCountNotEqual x:Key="IsCollectionCountNotEqual" />
+            <converters:CollectionItemAtIndexConverter x:Key="CollectionItemAtIndexConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding RefreshCommand}"
+            IconImageSource="baseline_refresh_white_24.png"/>
+    </ContentPage.ToolbarItems>
     <StackLayout>      
         <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
             <Label
@@ -22,14 +31,59 @@
                 FontSize="Medium"
                 Text="Please login to an account to use this feature." />
         </StackLayout>
-        <StackLayout IsVisible="{Binding IsUserLoggedIn}">
-            <Label
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="Center"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontSize="Large"
-                Text="Logged In!" />
+        <StackLayout IsVisible="{Binding IsUserLoggedIn}" Margin="15">
+            <pages:HoldsSummaryView />
+            <BoxView
+                HorizontalOptions="FillAndExpand"
+                HeightRequest="1"
+                Color="LightGray" />
+            <!-- There is only one user logged in. Because of this, we will simply show the users holds. -->
+            <StackLayout IsVisible="{Binding ListUserHolds,Converter={StaticResource IsCollectionCountEqual},ConverterParameter='1'}">
+                <pages:HoldsDetailView
+                    BindingContext="{Binding ListUserHolds,Converter={StaticResource CollectionItemAtIndexConverter},ConverterParameter=0}" />
+            </StackLayout>
+            <!-- We have two or more accounts. Instead we will show a list of users with hold summaries. Clicking on one will let the user view
+                the holds up close for each account. -->
+            <StackLayout IsVisible="{Binding ListUserHolds,Converter={StaticResource IsCollectionCountNotEqual},ConverterParameter='1'}">
+                <CollectionView
+                    x:Name="_collectionViewUserHolds"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedUserHolds}"
+                    ItemsSource="{Binding ListUserHolds}"
+                    SelectionChangedCommand="{Binding UserHoldsSelectedCommand}"
+                    SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionViewUserHolds}, Path=SelectedItem}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="2,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Grid.Column="0"
+                                    FontSize="Medium"
+                                    Text="{Binding User.Nickname}" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="Medium">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Holds.ActiveHolds}" />
+                                            <Span Text=" / " />
+                                            <Span Text="{Binding Holds.InactiveHolds}" />
+                                            <Span Text=" / " />
+                                            <Span Text="{Binding Holds.ReadyForPickup}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
         </StackLayout>
     </StackLayout>
 </ContentPage>

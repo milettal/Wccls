@@ -16,7 +16,13 @@ namespace WcclsMobile.Services {
 		///<summary>An in memory cache of all the users with their sessions.</summary>
 		private List<User> _listUsers { get; } = new List<User>();
 
-		public bool HasUserAccounts => !_listUsers.IsNullOrEmpty();
+		public bool HasUserAccounts {
+			get {
+				lock(_listUsers) {
+					return !_listUsers.IsNullOrEmpty();
+				}
+			}
+		}
 
 		public UserAuthenticationService(IEventAggregator eventAggregator) {
 			_eventAggregator = eventAggregator;
@@ -29,7 +35,7 @@ namespace WcclsMobile.Services {
 		public List<User> GetLoggedInUsers() {
 			lock(_listUsers) {
 				//Returning a deep copy of the list, but a shallow copy of the users.
-				//For now, I think this is fine.
+				//This is what we want as all VMs will have a synced copy of the same user.
 				return new List<User>(_listUsers);
 			}
 		}

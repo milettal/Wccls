@@ -17,8 +17,10 @@ namespace WcclsCore.Models {
 		public int AvailableCopies { get; set; }
 		///<summary>The total number of copies for this item.</summary>
 		public int TotalCopies { get; set; }
-		///<summary>The status of this hold.</summary>
-		public string Status { get; set; }
+		///<summary>The status of this hold as a string. Only used if we are unable to parse the ststus</summary>
+		public string StatusStr { get; set; }
+		///<summary>The status of the hold.</summary>
+		public HoldStatus Status { get; set; }
 		///<summary>The date the hold expires.</summary>
 		public DateTime ExpiryDate { get; set; }
 		///<summary>The library that will house the item to be picked up.</summary>
@@ -27,12 +29,32 @@ namespace WcclsCore.Models {
 		public LibraryItem Item { get; set; }
 	}
 
+	public enum HoldStatus {
+		Unknown,
+		[Description("Paused")]
+		Suspended,
+		[Description("Not yet available")]
+		Not_Yet_Available,
+		[Description("In transit")]
+		In_Transit,
+		[Description("Ready for pickup")]
+		Ready_For_Pickup,
+	}
+
 	public enum ItemAction {
 		Unknown,
+		///<summary>Cancel a hold on an item.</summary>
 		Cancel,
+		///<summary>Suspend a hold on an item.</summary>
 		Suspend,
+		///<summary>Update the pickup location for an item.</summary>
 		UpdateLocation,
+		///<summary>Renew a checked out item.</summary>
 		Renew,
+		///<summary>Update the date on a suspended hold.</summary>
+		UpdateSuspend,
+		///<summary>Activate a suspended hold.</summary>
+		Activate,
 	}
 
 }

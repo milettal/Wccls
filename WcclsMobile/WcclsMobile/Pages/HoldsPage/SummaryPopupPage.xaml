@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    CloseWhenBackgroundIsClicked="True"
+    x:Class="WcclsMobile.Pages.SummaryPopupPage">
+    <Frame
+        Margin="30"
+        VerticalOptions="Start"
+        BackgroundColor="White">
+        <StackLayout>
+            <Label
+                FontSize="Title"
+                Text="{Binding Item.Title}" />
+            <ScrollView HorizontalScrollBarVisibility="Always">
+                <Label
+                    Text="{Binding Item.Description}" />
+            </ScrollView>
+            <Button
+                Command="{Binding CloseCommand}"
+                Text="Close" />
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>

@@ -29,6 +29,9 @@ namespace Core.Xamarin.Converters {
 				throw new ArgumentException(nameof(value));
 			}
 			ICollection<object> col = collection.Cast<object>().ToList();
+			if(col.Count <= index || index < 0) {
+				return null;
+			}
 			return col.ElementAt(index);
 		}
 

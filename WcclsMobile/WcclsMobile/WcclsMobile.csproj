@@ -33,6 +33,7 @@
     <Folder Include="Pages\AccountsPage\" />
     <Folder Include="Models\" />
     <Folder Include="Events\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Images\settings-24px.svg" />
@@ -41,6 +42,19 @@
     <None Remove="Images\feedback-24px.svg" />
     <None Remove="Images\account_circle-black-24px.svg" />
     <None Remove="Images\person-24px.svg" />
+    <None Remove="Images\airport_shuttle-black-18dp.svg" />
+    <None Remove="Images\done-black-18dp.svg" />
+    <None Remove="Images\hourglass_empty-black-18dp.svg" />
+    <None Remove="Images\album-24px.svg" />
+    <None Remove="Images\devices-24px.svg" />
+    <None Remove="Images\menu_book-24px.svg" />
+    <None Remove="Images\movie-24px.svg" />
+    <None Remove="Images\music_note-24px.svg" />
+    <None Remove="Images\newspaper.svg" />
+    <None Remove="Images\sports_esports-24px.svg" />
+    <None Remove="Images\text_format-24px.svg" />
+    <None Remove="Images\volume_up-24px.svg" />
+    <None Remove="Images\pause-24px.svg" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\settings-24px.svg" />
@@ -49,6 +63,19 @@
     <EmbeddedResource Include="Images\feedback-24px.svg" />
     <EmbeddedResource Include="Images\account_circle-black-24px.svg" />
     <EmbeddedResource Include="Images\person-24px.svg" />
+    <EmbeddedResource Include="Images\airport_shuttle-black-18dp.svg" />
+    <EmbeddedResource Include="Images\done-black-18dp.svg" />
+    <EmbeddedResource Include="Images\hourglass_empty-black-18dp.svg" />
+    <EmbeddedResource Include="Images\album-24px.svg" />
+    <EmbeddedResource Include="Images\devices-24px.svg" />
+    <EmbeddedResource Include="Images\menu_book-24px.svg" />
+    <EmbeddedResource Include="Images\movie-24px.svg" />
+    <EmbeddedResource Include="Images\music_note-24px.svg" />
+    <EmbeddedResource Include="Images\newspaper.svg" />
+    <EmbeddedResource Include="Images\sports_esports-24px.svg" />
+    <EmbeddedResource Include="Images\text_format-24px.svg" />
+    <EmbeddedResource Include="Images\volume_up-24px.svg" />
+    <EmbeddedResource Include="Images\pause-24px.svg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\AccountsPage.xaml.cs" />

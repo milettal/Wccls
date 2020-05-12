@@ -20,7 +20,7 @@ namespace WcclsMobile.Droid {
             Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
             Popup.Init(this, bundle);
-            CachedImageRenderer.Init(null);
+            CachedImageRenderer.Init(true);
             LoadApplication(new App(new AndroidInitializer()));
         }
 

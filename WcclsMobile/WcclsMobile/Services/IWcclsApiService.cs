@@ -17,5 +17,8 @@ namespace WcclsMobile.Services {
 
 		///<summary>Returns either an error or the Fines for this user.</summary>
 		Task<(string error, FinesResult result)> Fines(User user);
+
+		///<summary>Returns either an error or all the holds for this user.</summary>
+		Task<(string error, HoldsResult result)> Holds(User user);
 	}
 }

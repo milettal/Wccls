@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    x:Name="_holdsDetailView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:localConverters="clr-namespace:WcclsMobile.Converters"
+    xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:wccls="clr-namespace:WcclsCore.Models;assembly=Core.Wccls"
+    xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="WcclsMobile.Pages.HoldsDetailView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:StringIsNotNullOrEmpty x:Key="StringIsNotNullOrEmpty" />
+            <localConverters:ListAuthorsToDisplayConverter x:Key="ListAuthorsToDisplayConverter" />
+            <localConverters:HoldStatusToImageConverter x:Key="HoldStatusToImageConverter" />
+            <localConverters:LibraryToLibraryNameConverter x:Key="LibraryToLibraryNameConverter" />
+            <localConverters:FormatToDisplayConverter x:Key="FormatToDisplayConverter" />
+            <localConverters:FormatToImageConverter x:Key="FormatToImageConverter" />
+            <converters:IsCollectionNotNullOrEmpty x:Key="IsCollectionNotNullOrEmpty" />
+            <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+            <converters:IsEnumNotEqualConverter x:Key="IsEnumNotEqualConverter" />
+            <converters:PrependStringIfNotEmptyConverter x:Key="PrependStringIfNotEmptyConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <CollectionView
+        SelectionMode="None"
+        ItemsSource="{Binding Holds.ListHolds}">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout
+                VerticalItemSpacing="5"
+                Orientation="Vertical" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame
+                    VerticalOptions="Start"
+                    HasShadow="False"
+                    Padding="10"
+                    BorderColor="LightGray">
+                    <Grid ColumnSpacing="0" RowSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <FlexLayout
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Wrap="Wrap"
+                            JustifyContent="SpaceBetween"
+                            HorizontalOptions="FillAndExpand"
+                            AlignItems="Start"
+                            AlignContent="Start">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <forms:CachedImage
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    WidthRequest="100"
+                                    Source="{Binding Item.ImageResources.MediumUrl}"
+                                    DownsampleToViewSize="True" />
+                                <StackLayout
+                                    Padding="0"
+                                    Margin="0"
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Spacing="0">
+                                    <Label
+                                        FontSize="Medium"
+                                        FontAttributes="Bold"
+                                        Text="{Binding Item.Title}" />          
+                                    <Label
+                                        IsVisible="{Binding Item.Subtitle,Converter={StaticResource StringIsNotNullOrEmpty}}"
+                                        FontSize="Small"
+                                        FontAttributes="Italic"
+                                        Text="{Binding Item.Subtitle}" />
+                                    <Label
+                                        IsVisible="{Binding Item.ListAuthors,Converter={StaticResource IsCollectionNotNullOrEmpty}}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="by " />
+                                                <Span Text="{Binding Item.ListAuthors,Converter={StaticResource ListAuthorsToDisplayConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    Text="{Binding Item.PublicationDate}" />
+                                                <Span
+                                                    Text="{Binding Item.Edition,Converter={StaticResource PrependStringIfNotEmptyConverter},ConverterParameter={StaticResource SeparatorString}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ffimageLoading:SvgCachedImage
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            IsVisible="{Binding Item.Format,Converter={StaticResource IsEnumNotEqualConverter},ConverterParameter={x:Static wccls:ItemFormat.Unknown}}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="25"
+                                            HeightRequest="25"
+                                            HorizontalOptions="Start"
+                                            Source="{Binding Item.Format,Converter={StaticResource FormatToImageConverter}}" />
+                                         <Label
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            VerticalOptions="Center"
+                                            VerticalTextAlignment="Center"
+                                            Text="{Binding Item.Format,Converter={StaticResource FormatToDisplayConverter}}"
+                                            FontSize="Small" />
+                                    </Grid>
+                                    <Label
+                                        Margin="0,10,0,0"
+                                        IsVisible="{Binding Item.Description,Converter={StaticResource StringIsNotNullOrEmpty}}"
+                                        TextDecorations="Underline"
+                                        FontSize="Medium"
+                                        Text="View Description">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={x:Reference _holdsDetailView},Path=BindingContext.ViewDescriptionCommand}"
+                                                CommandParameter="{Binding Item}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+                            <StackLayout
+                                Margin="0,5,0,0"
+                                Spacing="0">
+                                <StackLayout
+                                    Orientation="Horizontal">
+                                    <ffimageLoading:SvgCachedImage
+                                        WidthRequest="25"
+                                        HeightRequest="25"
+                                        HorizontalOptions="Start"
+                                        Source="{Binding Status,Converter={StaticResource HoldStatusToImageConverter}}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="Medium"
+                                        Text="{Binding Status,Converter={StaticResource EnumToDescriptionConverter}}"
+                                        VerticalOptions="Center"
+                                        HorizontalTextAlignment="Center">
+                                    </Label>
+                                </StackLayout>
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                Text="Position " />
+                                            <Span
+                                                FontSize="Medium"
+                                                FontAttributes="Bold"
+                                                Text="{Binding HoldPosition}" />
+                                            <Span
+                                                Text=" out of " />
+                                            <Span
+                                                FontSize="Medium"
+                                                FontAttributes="Bold"
+                                                Text="{Binding TotalCopies}" />
+                                            <Span
+                                                Text=" copies" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label
+                                    IsVisible="{Binding PickupLocation,
+                                        Converter={StaticResource IsEnumNotEqualConverter},
+                                        ConverterParameter={x:Static wccls:Library.Unknown}}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                Text="Pick up at: " />
+                                            <Span
+                                                FontAttributes="Bold"
+                                                Text="{Binding PickupLocation,Converter={StaticResource LibraryToLibraryNameConverter}}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </FlexLayout>
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            IsVisible="{Binding ListActions,Converter={StaticResource IsCollectionNotNullOrEmpty}}"
+                            Command="{Binding Source={x:Reference _holdsDetailView},Path=BindingContext.HoldOptionsCommand}"
+                            CommandParameter="{Binding .}"
+                            VerticalOptions="Start"
+                            HorizontalOptions="End"
+                            BackgroundColor="White"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            ImageSource="baseline_more_vert_black_24.png" />
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentView>

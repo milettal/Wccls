@@ -35,6 +35,9 @@
             SelectionChangedCommand="{Binding UserSelectedCommand}"
             SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionView}, Path=SelectedItem}"
             IsVisible="{Binding ListUsers,Converter={StaticResource IsCollectionNotNullOrEmpty}}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

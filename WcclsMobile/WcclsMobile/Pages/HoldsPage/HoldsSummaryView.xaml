@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="WcclsMobile.Pages.HoldsSummaryView">
+    <StackLayout
+        Spacing="0">
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        FontSize="Medium"
+                        FontAttributes="Bold"
+                        Text="Active: " />
+                    <Span
+                        FontSize="Medium"
+                        Text="{Binding ActiveHolds}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        FontSize="Medium"
+                        FontAttributes="Bold"
+                        Text="Inactive: " />
+                    <Span
+                        FontSize="Medium"
+                        Text="{Binding InactiveHolds}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        FontSize="Medium"
+                        FontAttributes="Bold"
+                        Text="Ready for Pickup: " />
+                    <Span
+                        FontSize="Medium"
+                        Text="{Binding ReadyForPickup}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+    </StackLayout>
+</ContentView>

@@ -83,7 +83,7 @@ namespace WcclsMobile.Pages {
 		}
 
 		public override async Task InitializeVMAsync(INavigationParameters parameters) {
-			await RefreshFines();
+			TaskUtils.FireAndForget(RefreshFines);
 		}
 
 		public IAsyncCommand<UserFines> UserFinesSelectedCommand => GetCommandAsync(() => UserFinesSelectedCommand, true, async (userFines) => {
@@ -113,7 +113,7 @@ namespace WcclsMobile.Pages {
 			await TaskUtils.RunInParallel(_listUsersCur, async (user) => {
 				(string error, FinesResult result) = await _apiService.Fines(user);
 				if(!string.IsNullOrEmpty(error)) {
-					strBuilder.AppendLine(error);
+					strBuilder.AppendLine($"Error for user {user.Nickname}: {error}");
 				}
 				else {
 					listUserFines.Add(new UserFines {
