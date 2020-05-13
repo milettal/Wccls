@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Wccls.Models.Result;
+using WcclsCore.Models;
 using WcclsCore.Models.Result;
 using WcclsMobile.Models;
 
@@ -20,5 +22,17 @@ namespace WcclsMobile.Services {
 
 		///<summary>Returns either an error or all the holds for this user.</summary>
 		Task<(string error, HoldsResult result)> Holds(User user);
+
+		///<summary>Returns an error or blank if successful. Cancels the given holds.</summary>
+		Task<string> CancelHolds(User user, List<Hold> listHolds);
+
+		///<summary>Suspends OR changed the date for the given list of holds to the given date. Returns an error if something went wrong.</summary>
+		Task<string> SuspendHolds(User user, List<Hold> listHolds, DateTime timeSuspend);
+
+		///<summary>Reactivates the given holds. Returns an error if something went wrong.</summary>
+		Task<string> ActivateHolds(User user, List<Hold> listHolds);
+
+		///<summary>Updates the given holds pickup location to the passed in location. Returns an error if something went wrong.</summary>
+		Task<string> UpdateHoldPickupLocation(User user, List<Hold> listHolds, Library newPickupLocation);
 	}
 }

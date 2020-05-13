@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+ xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="WcclsMobile.Pages.PauseHoldPopupPage">
+    <Frame
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        BackgroundColor="White"
+        WidthRequest="350"
+        Margin="30">
+        <StackLayout>
+            <Label
+                FontSize="Medium"
+                Text="Pausing a hold will maintain your place in the queue until the chosen date, or you resume the hold." />
+            <Label
+                FontAttributes="Bold"
+                Text="Until:" />
+            <DatePicker
+                Date="{Binding SuspendDate, Mode=TwoWay}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding CancelCommand}"
+                    Text="Cancel" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding OkCommand}"
+                    Text="Pause" />
+            </Grid>
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>

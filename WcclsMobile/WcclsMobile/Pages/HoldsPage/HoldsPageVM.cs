@@ -6,7 +6,6 @@ using Core;
 using Core.Xamarin.MVVM;
 using Prism.Events;
 using Prism.Navigation;
-using Prism.Services;
 using WcclsCore.Models.Result;
 using WcclsMobile.Events;
 using WcclsMobile.Models;
@@ -47,11 +46,11 @@ namespace WcclsMobile.Pages {
 			set { SetBindableProperty(() => ActiveHolds, value); }
 		}
 
-		///<summary>The total number of inactive holds across all accounts.
+		///<summary>The total number of paused holds across all accounts.
 		///These properties must match the name of the one in the HoldsResult.</summary>
-		public int InactiveHolds {
-			get { return GetBindableProperty(() => InactiveHolds); }
-			set { SetBindableProperty(() => InactiveHolds, value); }
+		public int PausedHolds {
+			get { return GetBindableProperty(() => PausedHolds); }
+			set { SetBindableProperty(() => PausedHolds, value); }
 		}
 
 		///<summary>The total number of holds ready for pickup across all accounts.
@@ -114,6 +113,7 @@ namespace WcclsMobile.Pages {
 				return;
 			}
 			//Open the detail page.
+			await _navigationService.NavigateAsync(nameof(HoldsDetailPage), (HoldsDetailPageVM.USER_HOLDS_KEY, holds));
 		});
 
 		private async Task RefreshHolds() {
@@ -147,10 +147,12 @@ namespace WcclsMobile.Pages {
 				}
 			});
 			ActiveHolds = listHolds.Sum(x => x.Holds.ActiveHolds);
-			InactiveHolds = listHolds.Sum(x => x.Holds.InactiveHolds);
+			PausedHolds = listHolds.Sum(x => x.Holds.PausedHolds);
 			ReadyForPickup = listHolds.Sum(x => x.Holds.ReadyForPickup);
 			Errors = strBuilder.ToString();
-			ListUserHolds = listHolds;
+			ListUserHolds = listHolds
+				.OrderBy(x => x.User.Nickname)
+				.ToList();
 			IsLoadingHolds = false;
 		}
 

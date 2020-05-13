@@ -123,14 +123,25 @@ namespace WcclsApi {
 			}
 		}
 
+		public async Task ChangeHoldsLocation(long userId, List<string> listHoldIds, Library newLocation) {
+			HttpResponseMessage response = await _client.PatchAsync($"{HOLDS_URL}?locale=en-US", new StringContent(JsonConvert.SerializeObject(new {
+				accountId = userId,
+				holdIds = listHoldIds.ToArray(),
+				location = LibraryItemParser.GetCodeByLibrary(newLocation),
+			}), Encoding.UTF8, "application/json"));
+			if(!response.IsSuccessStatusCode) {
+				throw new ApplicationException($"Error: {(int)response.StatusCode} - {response.StatusCode.ToString()}");
+			}
+		}
+
 		///<summary>Pauses all the given holds.</summary>
 		public async Task<PauseHoldsResult> PauseHolds(long userId, List<string> listHoldIds, DateTime endDate, bool isCurrentlyActive) {
 			HttpResponseMessage response = await _client.PatchAsync($"{HOLDS_URL}?locale=en-US",new StringContent(JsonConvert.SerializeObject(new {
 				accountId = userId,
 				holdIds = listHoldIds.ToArray(),
 				suspended = new {
-					startDate = isCurrentlyActive ? _systemClock.UtcNow.LocalDateTime.ToShortDateString() : null,
-					endDate = endDate.ToLocalTime().ToShortDateString(),
+					startDate = (string)null,
+					endDate = endDate.ToString("yyyy-MM-dd"),
 					status = true,
 				},
 			}),Encoding.UTF8,"application/json"));
@@ -265,7 +276,9 @@ namespace WcclsApi {
 								name = "",
 								ips = new string[0],
 							},
-							expiryDate = new DateTime(),
+							expiryDate = (DateTime?) new DateTime(),
+							suspendEndDate = (DateTime?) new DateTime(),
+							holdPlacedDate = (DateTime?) new DateTime(),
 						}),
 					},
 					borrowing = new {
@@ -307,6 +320,8 @@ namespace WcclsApi {
 							Enum.TryParse(x ?? "", true, out ItemAction ac);
 							return ac;
 						}).Where(x => x != ItemAction.Unknown).ToList(),
+						HoldPlacedDate = holdData.Value.holdPlacedDate,
+						SuspendEndDate = holdData.Value.suspendEndDate,
 						PickupLocation = LibraryItemParser.GetLibaryByCode(holdData.Value.pickupLocation?.code),
 						Item = GetItemFromBib(bib),
 					};
@@ -314,8 +329,8 @@ namespace WcclsApi {
 				}
 				return new HoldsResult {
 					ListHolds = listHolds,
-					ActiveHolds = result.borrowing.summaries.holds.totalOperative,
-					InactiveHolds = result.borrowing.summaries.inactiveHolds.totalOperative,
+					ActiveHolds = listHolds.Count(x => x.Status == HoldStatus.In_Transit || x.Status == HoldStatus.Not_Yet_Available),
+					PausedHolds = listHolds.Count(x => x.Status == HoldStatus.Suspended),
 					ReadyForPickup = listHolds.Count(x => x.Status == HoldStatus.Ready_For_Pickup),
 				};
 			}

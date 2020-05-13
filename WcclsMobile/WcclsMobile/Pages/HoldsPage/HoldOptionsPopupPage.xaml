@@ -5,66 +5,121 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Core.Xamarin.Controls;assembly=Core.Xamarin"
     xmlns:localconverters="clr-namespace:WcclsMobile.Converters"
+    xmlns:modularity="http://prismlibrary.com"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin" xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
     x:Class="WcclsMobile.Pages.HoldOptionsPopupPage">
     <pages:PopupPage.Resources>
         <ResourceDictionary>
             <localconverters:LibraryToLibraryNameConverter x:Key="LibraryToLibraryNameConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </pages:PopupPage.Resources>
-    <Frame
-        x:Name="_frameOptions"
-        Margin="30"
-        HorizontalOptions="Center"
-        VerticalOptions="Center"
-        BackgroundColor="White">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <StackLayout
-                Grid.Column="0"
-                Grid.ColumnSpan="3"
-                Grid.Row="0"
-                IsVisible="{Binding CanUserChangePickupLocation}">
-                <Label
-                    FontSize="Medium"
-                    Text="Pickup Location: " />
-                <controls:BindablePicker
-                    SelectedItem="{Binding LibraryCur}"
-                    DisplayMemberConverter="{StaticResource LibraryToLibraryNameConverter}"
-                    ItemSelectedCommand="{Binding LibraryChangedCommand}"
-                    ItemsSource="{Binding ListPossibleLibraries}" />
-            </StackLayout>
-            <Button
-                Grid.Row="1"
-                Grid.Column="0"
-                IsVisible="{Binding CanUserSuspendHold}"
-                BackgroundColor="Accent"
-                Command="{Binding SuspendHoldCommand}"
-                Text="Pause Hold" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                IsVisible="{Binding CanUserCancelHold}"
-                BackgroundColor="IndianRed"
-                Command="{Binding CancelHoldCommand}"
-                Text="Cancel Hold" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="2"
-                Padding="0"
-                Margin="0"
-                HorizontalOptions="End"
-                VerticalOptions="End"
-                BackgroundColor="{Binding Source={x:Reference _frameOptions},Path=BackgroundColor}"
-                Command="{Binding CloseCommand}"
-                Text="Close" />
-        </Grid>
-    </Frame>
+    <AbsoluteLayout>
+        <Frame
+            x:Name="_frameOptions"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            Margin="30"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            BackgroundColor="White">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="0"
+                    IsVisible="{Binding CanUserChangePickupLocation}">
+                    <Label
+                        FontSize="Medium"
+                        Text="Pickup Location: " />
+                    <controls:BindablePicker
+                        IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                        SelectedItem="{Binding LibraryCur}"
+                        DisplayMemberConverter="{StaticResource LibraryToLibraryNameConverter}"
+                        ItemSelectedCommand="{Binding LibraryChangedCommand}"
+                        ItemsSource="{Binding ListPossibleLibraries}" />
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="1"
+                    IsVisible="{Binding CanUserChangeSuspendDate}">
+                    <Label
+                        FontSize="Medium"
+                        Text="Pause hold until: " />
+                    <DatePicker
+                        IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                        Date="{Binding SuspendDate}">
+                        <DatePicker.Behaviors>
+                            <modularity:EventToCommandBehavior
+                                EventName="DateSelected"
+                                Command="{Binding SuspendDateChangedCommand}" />
+                        </DatePicker.Behaviors>
+                    </DatePicker>
+                </StackLayout>
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    IsVisible="{Binding CanUserSuspendHold}"
+                    Text="Pause Hold"
+                    Command="{Binding SuspendHoldCommand}"
+                    BackgroundColor="Accent" />
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    IsVisible="{Binding CanUserActivateHold}"
+                    Text="Activate Hold"
+                    Command="{Binding ActivateHoldCommand}"
+                    BackgroundColor="Accent" />
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    IsVisible="{Binding CanUserCancelHold}"
+                    BackgroundColor="IndianRed"
+                    Command="{Binding CancelHoldCommand}"
+                    Text="Cancel Hold" />
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    Padding="0"
+                    Margin="0"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    BackgroundColor="{Binding Source={x:Reference _frameOptions},Path=BackgroundColor}"
+                    Command="{Binding CloseCommand}"
+                    Text="Close" />
+            </Grid>
+        </Frame>
+        <Frame
+            IsVisible="{Binding IsLoading}"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            HorizontalOptions="Center"
+            Padding="6"
+            VerticalOptions="Center"
+            BorderColor="LightGray"
+            CornerRadius="6"
+            BackgroundColor="White">
+            <forms:AnimationView
+                WidthRequest="50"
+                HeightRequest="50"
+                Animation="315-loader-ring.json"
+                Loop="True"
+                IsPlaying="True" />
+            </Frame>
+    </AbsoluteLayout>
 </pages:PopupPage>

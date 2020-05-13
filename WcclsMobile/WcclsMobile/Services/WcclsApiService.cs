@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Security;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Async;
+using Core.DependencyInjection;
+using Core.Wccls.Models.Request;
 using Core.Wccls.Models.Result;
 using Newtonsoft.Json;
+using WcclsCore.Models;
 using WcclsCore.Models.Result;
 using WcclsMobile.Models;
 using Xamarin.Forms;
@@ -24,11 +29,14 @@ namespace WcclsMobile.Services {
 
 		private HttpClient _client { get; }
 
+		private IClock _clock { get; }
+
 		///<summary>A dictionary to keep track of session information. The big problem is if two api calls come at the same time and
 		///both try and refresh the session, they will refresh two sesssions and the first in will fail.</summary>
 		private ConcurrentDictionary<User, SessionLock> _dictionaryUsers { get; } = new ConcurrentDictionary<User, SessionLock>();
 
-		public WcclsApiService() {
+		public WcclsApiService(IClock clock) {
+			_clock = clock;
 			HttpClientHandler handler = new HttpClientHandler();
 			handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => {
 				if(cert.Issuer == "CN=localhost") {
@@ -130,6 +138,116 @@ namespace WcclsMobile.Services {
 				}
 				return ("", result);
 			});
+		}
+
+		public async Task<string> CancelHolds(User user, List<Hold> listHolds) {
+			if(user == null) {
+				throw new ArgumentNullException(nameof(user));
+			}
+			(string error, _) = await RunNonLoginCall(user, async () => {
+				HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, $"{API_URL}/account/holds/cancelholds");
+				message.Headers.Add(SESSION_ID_HEADER, user.SessionId);
+				message.Content = new StringContent(JsonConvert.SerializeObject(new CancelHoldsRequest {
+					ListHoldIds = listHolds.Select(x => x.HoldId).ToList(),
+					ListMetadataIds = listHolds.Select(x => x.Item.Id).ToList(),
+				}), Encoding.UTF8, "application/json");
+				HttpResponseMessage response;
+				try {
+					response = await _client.SendAsync(message);
+				}
+				catch(Exception e) {
+					return ($"An error occurred. Please check your internet connection and try again - {e.Message}", "");
+				}
+				string content = await response.Content.ReadAsStringAsync();
+				if(!response.IsSuccessStatusCode) {
+					return ($"Error - {content}", "");
+				}
+				return ("", "");
+			});
+			return error;
+		}
+
+		public async Task<string> SuspendHolds(User user, List<Hold> listHolds, DateTime timeSuspend) {
+			if(user == null) {
+				throw new ArgumentNullException(nameof(user));
+			}
+			(string error, _) = await RunNonLoginCall(user, async () => {
+				HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, $"{API_URL}/account/holds/pauseholds");
+				message.Headers.Add(SESSION_ID_HEADER, user.SessionId);
+				message.Content = new StringContent(JsonConvert.SerializeObject(new PauseHoldsRequest {
+					ListHoldIds = listHolds.Select(x => x.HoldId).ToList(),
+					//We need to make sure to include the now time in the call to the backend. The backend will convert it to UTC. However,
+					//if we send midnight, it may choose the wrong date.
+					EndDate = timeSuspend,
+					IsCurrentlyActive = listHolds[0].Status != HoldStatus.Suspended,
+				}), Encoding.UTF8, "application/json");
+				HttpResponseMessage response;
+				try {
+					response = await _client.SendAsync(message);
+				}
+				catch(Exception e) {
+					return ($"An error occurred. Please check your internet connection and try again - {e.Message}", "");
+				}
+				string content = await response.Content.ReadAsStringAsync();
+				if(!response.IsSuccessStatusCode) {
+					return ($"Error - {content}", "");
+				}
+				return ("", "");
+			});
+			return error;
+		}
+
+		public async Task<string> ActivateHolds(User user, List<Hold> listHolds) {
+			if(user == null) {
+				throw new ArgumentNullException(nameof(user));
+			}
+			(string error, _) = await RunNonLoginCall(user, async () => {
+				HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, $"{API_URL}/account/holds/resumeholds");
+				message.Headers.Add(SESSION_ID_HEADER, user.SessionId);
+				message.Content = new StringContent(JsonConvert.SerializeObject(new ResumeHoldsRequest {
+					ListHoldIds = listHolds.Select(x => x.HoldId).ToList(),
+				}), Encoding.UTF8, "application/json");
+				HttpResponseMessage response;
+				try {
+					response = await _client.SendAsync(message);
+				}
+				catch(Exception e) {
+					return ($"An error occurred. Please check your internet connection and try again - {e.Message}", "");
+				}
+				string content = await response.Content.ReadAsStringAsync();
+				if(!response.IsSuccessStatusCode) {
+					return ($"Error - {content}", "");
+				}
+				return ("", "");
+			});
+			return error;
+		}
+
+		public async Task<string> UpdateHoldPickupLocation(User user, List<Hold> listHolds, Library newPickupLocation) {
+			if(user == null) {
+				throw new ArgumentNullException(nameof(user));
+			}
+			(string error, _) = await RunNonLoginCall(user, async () => {
+				HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, $"{API_URL}/account/holds/changeholdslocation");
+				message.Headers.Add(SESSION_ID_HEADER, user.SessionId);
+				message.Content = new StringContent(JsonConvert.SerializeObject(new ChangeHoldsLocationRequest {
+					ListHoldIds = listHolds.Select(x => x.HoldId).ToList(),
+					NewLocation = newPickupLocation,
+				}), Encoding.UTF8, "application/json");
+				HttpResponseMessage response;
+				try {
+					response = await _client.SendAsync(message);
+				}
+				catch(Exception e) {
+					return ($"An error occurred. Please check your internet connection and try again - {e.Message}", "");
+				}
+				string content = await response.Content.ReadAsStringAsync();
+				if(!response.IsSuccessStatusCode) {
+					return ($"Error - {content}", "");
+				}
+				return ("", "");
+			});
+			return error;
 		}
 
 		///<summary>Passthrough for all non login api calls. If the call fails for the first time, we will relog the user in. If that works, we will

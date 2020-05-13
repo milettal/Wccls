@@ -106,12 +106,12 @@ namespace WcclsMobile.Pages {
 			if(!IsUserLoggedIn) {
 				return;
 			}
-			PaymentUrl = _apiService.GetPaymentUrl();
 			IsLoadingFines = true;
 			List<UserFines> listUserFines = new List<UserFines>();
 			StringBuilder strBuilder = new StringBuilder();
 			await TaskUtils.RunInParallel(_listUsersCur, async (user) => {
 				(string error, FinesResult result) = await _apiService.Fines(user);
+				PaymentUrl=_apiService.GetPaymentUrl();
 				if(!string.IsNullOrEmpty(error)) {
 					strBuilder.AppendLine($"Error for user {user.Nickname}: {error}");
 				}

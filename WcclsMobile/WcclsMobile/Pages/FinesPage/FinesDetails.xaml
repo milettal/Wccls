@@ -2,7 +2,7 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin" xmlns:pages="clr-namespace:WcclsMobile.Pages"
     x:Class="WcclsMobile.Pages.FinesDetails">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -23,48 +23,20 @@
                 <RowDefinition
                     Height="Auto" />
             </Grid.RowDefinitions>
-            <Frame
-                x:Name="_frameDue"
+            <pages:FinesBalanceView
+                x:Name="_finesView"
                 Grid.Column="0"
                 Grid.Row="0"
                 HorizontalOptions="Start"
                 VerticalOptions="Start"
-                HasShadow="False"
-                Padding="5"
-                Margin="0"
-                CornerRadius="3">
-                <Frame.Triggers>
-                    <DataTrigger
-                        TargetType="Frame"
-                        Binding="{Binding Fines.TotalFines,Converter={StaticResource IsNumberEqualConverter},ConverterParameter=0}"
-                        Value="False">
-                        <Setter Property="BackgroundColor" Value="DarkRed" />
-                    </DataTrigger>
-                    <DataTrigger
-                        TargetType="Frame"
-                        Binding="{Binding Fines.TotalFines,Converter={StaticResource IsNumberEqualConverter},ConverterParameter=0}"
-                        Value="True">
-                        <Setter Property="BackgroundColor" Value="Green" />
-                    </DataTrigger>
-                </Frame.Triggers>
-                <Label
-                    FontAttributes="Bold"
-                    TextColor="White"
-                    FontSize="Medium">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding Fines.TotalFines,Converter={StaticResource NumberToDollarDisplayConverter}}" />
-                            <Span Text=" due" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </Frame>
+                ShowDue="True"
+                Balance="{Binding Fines.TotalFines}" />
             <!-- For whatever reason, this button looks weird when the row is set to Auto. When setting to *, it works fine. But then
-                when this button is hidden, the other frame looks weird. The solution for now is to bind the buttons hight to the "due" frame's height. -->
+                when this button is hidden, the other frame looks weird. The solution for now is to bind the buttons hight to the fines balances. -->
             <Button
                 Grid.Column="1"
                 Grid.Row="0"
-                HeightRequest="{Binding Source={x:Reference _frameDue},Path=Height}"
+                HeightRequest="{Binding Source={x:Reference _finesView},Path=Height}"
                 Padding="4"
                 Margin="0"
                 IsVisible="{Binding Fines.TotalFines,Converter={StaticResource IsNumberNotEqualConverter},ConverterParameter=0}"

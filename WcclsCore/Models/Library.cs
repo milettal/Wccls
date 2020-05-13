@@ -17,6 +17,8 @@ namespace WcclsCore.Models {
 
 		private static Dictionary<ItemFormat, FormatCategory> _dictFormatToCategory { get; set; } = new Dictionary<ItemFormat, FormatCategory>();
 
+		private static Dictionary<Library, string> _dictLibraryToCode { get; set; } = new Dictionary<Library, string>();
+
 		public static Library GetLibaryByCode(string code) {
 			if(string.IsNullOrWhiteSpace(code)) {
 				return Library.Unknown;
@@ -85,6 +87,22 @@ namespace WcclsCore.Models {
 				}
 				_dictFormatToCategory.TryGetValue(format, out FormatCategory cate);
 				return cate;
+			}
+		}
+
+		///<summary>Returns the code for the given library.</summary>
+		public static string GetCodeByLibrary(Library library) {
+			lock(_dictLibraryToCode) {
+				if(_dictLibraryToCode.Count==0) {
+					List<FieldInfo> listFields = typeof(Library).GetFields().ToList();
+					foreach(Library lib in EnumUtils.GetAll<Library>()) {
+						FieldInfo field = listFields.FirstOrDefault(x => x.Name == lib.ToString());
+						LibraryAttribute attr = field?.GetCustomAttribute<LibraryAttribute>();
+						_dictLibraryToCode[lib] = attr?.Code ?? "";
+					}
+				}
+				_dictLibraryToCode.TryGetValue(library, out string code);
+				return code;
 			}
 		}
 	}

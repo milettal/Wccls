@@ -22,7 +22,11 @@ namespace WcclsCore.Models {
 		///<summary>The status of the hold.</summary>
 		public HoldStatus Status { get; set; }
 		///<summary>The date the hold expires.</summary>
-		public DateTime ExpiryDate { get; set; }
+		public DateTime? ExpiryDate { get; set; }
+		///<summary>The date that the hold was placed.</summary>
+		public DateTime? HoldPlacedDate { get; set; }
+		///<summary>The date that the hold is automatically resumed.</summary>
+		public DateTime? SuspendEndDate { get; set; }
 		///<summary>The library that will house the item to be picked up.</summary>
 		public Library PickupLocation { get; set; }
 		///<summary>The item that is being held.</summary>

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Core.Wccls.Models.Result;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WcclsApi.DependencyInjection;
@@ -19,8 +20,11 @@ namespace WcclsApi.Controllers {
 
 		private ISessionCache _sessionCache { get; }
 
-		public LoginController(ISessionCache sessionCache) {
+		private ISystemClock _systemClock { get; }
+
+		public LoginController(ISessionCache sessionCache, ISystemClock systemClock) {
 			_sessionCache = sessionCache;
+			_systemClock = systemClock;
 		}
 
 		///<summary>Logs the user in and returns a session id for the user.</summary>
@@ -32,7 +36,7 @@ namespace WcclsApi.Controllers {
 			}
 			CookieContainer container = new CookieContainer();
 			using HttpClient client = new HttpClient(new HttpClientHandler { CookieContainer = container });
-			WcclsWebScraping scraping = new WcclsWebScraping(client);
+			WcclsWebScraping scraping = new WcclsWebScraping(client, _systemClock);
 			(long userId, string username) = await scraping.Login(request.Username, request.Password);
 			if(userId <= 0) {
 				return BadRequest("Invalid Username or Password.");

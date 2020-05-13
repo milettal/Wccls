@@ -31,7 +31,8 @@
             IsPlaying="True" />
         <StackLayout
             AbsoluteLayout.LayoutBounds="0,0,1,1"
-            AbsoluteLayout.LayoutFlags="All">
+            AbsoluteLayout.LayoutFlags="All"
+            IsEnabled="{Binding IsLoadingFines, Converter = {StaticResource InverseBoolConverter}}">
             <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
                 <Label
                     Margin="15"
@@ -77,11 +78,14 @@
                                     <Label
                                         Grid.Column="0"
                                         FontSize="Medium"
+                                        VerticalOptions="Center"
+                                        VerticalTextAlignment="Center"
                                         Text="{Binding User.Nickname}" />
-                                    <Label
+                                    <pages:FinesBalanceView
                                         Grid.Column="1"
-                                        FontSize="Medium"
-                                        Text="{Binding Fines.TotalFines, Converter={StaticResource NumberToDollarDisplayConverter}}" />
+                                        Balance="{Binding Fines.TotalFines}"
+                                        VerticalOptions="Center"
+                                        ShowDue="False" />
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

@@ -81,7 +81,7 @@ namespace WcclsApi.Controllers {
 			if(request == null) {
 				return new BadRequestObjectResult("Null request.");
 			}
-			if(request.EndDate <= _systemClock.UtcNow.DateTime) {
+			if(request.EndDate <= _systemClock.UtcNow.LocalDateTime) {
 				return new BadRequestObjectResult("Bad EndDate");
 			}
 			if(request.ListHoldIds.IsNullOrEmpty()) {
@@ -136,6 +136,28 @@ namespace WcclsApi.Controllers {
 			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client, _systemClock);
 			try {
 				await scraping.CancelHolds(_sessionInfo.UserId, request.ListHoldIds, request.ListMetadataIds);
+			}
+			catch(Exception e) {
+				return new BadRequestObjectResult("bad");
+			}
+			return Ok("Success");
+		}
+
+		[HttpPost]
+		[Route("holds/changeholdslocation")]
+		public async Task<ObjectResult> ChangeHoldsLocation([FromBody] ChangeHoldsLocationRequest request) {
+			if(request == null) {
+				return new BadRequestObjectResult("Null request.");
+			}
+			if(request.ListHoldIds.IsNullOrEmpty()) {
+				return new BadRequestObjectResult("No Hold Ids provided.");
+			}
+			if(request.NewLocation == Library.Unknown || request.NewLocation == Library.WCCLSCourier) {
+				return new BadRequestObjectResult($"Invalid library: {request.NewLocation.ToString()}");
+			}
+			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client, _systemClock);
+			try {
+				await scraping.ChangeHoldsLocation(_sessionInfo.UserId, request.ListHoldIds, request.NewLocation);
 			}
 			catch(Exception e) {
 				return new BadRequestObjectResult("bad");

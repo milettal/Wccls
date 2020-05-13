@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    x:Name="_finesBalanceView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    x:Class="WcclsMobile.Pages.FinesBalanceView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:IsNumberEqualConverter x:Key="IsNumberEqualConverter" />
+            <converters:NumberToDollarDisplayConverter x:Key="NumberToDollarDisplayConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Frame
+        HasShadow="False"
+        Padding="5"
+        Margin="0"
+        CornerRadius="3">
+        <Frame.Triggers>
+            <DataTrigger
+                TargetType="Frame"
+                Binding="{Binding
+                    Source={x:Reference _finesBalanceView},
+                    Path=Balance,
+                    Converter={StaticResource IsNumberEqualConverter},
+                    ConverterParameter=0}"
+                Value="False">
+                <Setter Property="BackgroundColor" Value="DarkRed" />
+            </DataTrigger>
+            <DataTrigger
+                TargetType="Frame"
+                Binding="{Binding
+                    Source={x:Reference _finesBalanceView},
+                    Path=Balance,
+                    Converter={StaticResource IsNumberEqualConverter},
+                    ConverterParameter=0}"
+                Value="True">
+                <Setter Property="BackgroundColor" Value="Green" />
+            </DataTrigger>
+        </Frame.Triggers>
+        <StackLayout
+            Spacing="0"
+            Orientation="Horizontal">
+            <Label
+                FontAttributes="Bold"
+                TextColor="White"
+                Text="{Binding 
+                    Source={x:Reference _finesBalanceView},
+                    Path=Balance,
+                    Converter={StaticResource NumberToDollarDisplayConverter}}"
+                FontSize="Medium" />
+            <Label
+                IsVisible="{Binding Source={x:Reference _finesBalanceView},Path=ShowDue}"
+                FontAttributes="Bold"
+                TextColor="White"
+                Text=" due"
+                FontSize="Medium" />
+        </StackLayout>
+    </Frame>
+</ContentView>

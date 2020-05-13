@@ -24,10 +24,10 @@
                     <Span
                         FontSize="Medium"
                         FontAttributes="Bold"
-                        Text="Inactive: " />
+                        Text="Paused: " />
                     <Span
                         FontSize="Medium"
-                        Text="{Binding InactiveHolds}" />
+                        Text="{Binding PausedHolds}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>

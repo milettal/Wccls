@@ -38,7 +38,7 @@ namespace WcclsMobile.Pages {
 			if(hold?.ListActions == null || hold.ListActions.Count == 0) {
 				return;
 			}
-			await _navigationService.NavigateAsync(nameof(HoldOptionsPopupPage), (HoldOptionsPopupPageVM.HOLD_KEY, hold));
+			await _navigationService.NavigateAsync(nameof(HoldOptionsPopupPage), (HoldOptionsPopupPageVM.HOLD_KEY, hold), (HoldOptionsPopupPageVM.USER_KEY, User));
 		});
 	}
 }

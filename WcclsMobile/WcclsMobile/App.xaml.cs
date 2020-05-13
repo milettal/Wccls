@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.DependencyInjection;
 using Prism;
 using Prism.Ioc;
 using Prism.Navigation;
@@ -34,7 +35,9 @@ namespace WcclsMobile {
 			containerRegistry.RegisterForNavigation<FinesPage, FinesPageVM>();
 			containerRegistry.RegisterForNavigation<HoldsPage, HoldsPageVM>();
 			containerRegistry.RegisterForNavigation<SummaryPopupPage, SummaryPopupPageVM>();
+			containerRegistry.RegisterForNavigation<PauseHoldPopupPage, PauseHoldPopupPageVM>();
 			containerRegistry.RegisterForNavigation<HoldOptionsPopupPage, HoldOptionsPopupPageVM>();
+			containerRegistry.RegisterForNavigation<HoldsDetailPage, HoldsDetailPageVM>();
 			containerRegistry.RegisterForNavigation<MenuPage, MenuPageVM>();
 			containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageVM>();
 			containerRegistry.RegisterForNavigation<AddUser, AddUserVM>();
@@ -42,6 +45,7 @@ namespace WcclsMobile {
 			containerRegistry.RegisterForNavigation<FinesDetailsPage, FinesDetailsPageVM>();
 			containerRegistry.RegisterSingleton<IUserAuthenticationService, UserAuthenticationService>();
 			containerRegistry.RegisterSingleton<IWcclsApiService, WcclsApiService>();
+			containerRegistry.RegisterSingleton<IClock, Clock>();
 			containerRegistry.RegisterPopupNavigationService();
 		}
 	}

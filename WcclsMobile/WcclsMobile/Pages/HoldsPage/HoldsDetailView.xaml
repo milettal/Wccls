@@ -21,6 +21,9 @@
             <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
             <converters:IsEnumNotEqualConverter x:Key="IsEnumNotEqualConverter" />
             <converters:PrependStringIfNotEmptyConverter x:Key="PrependStringIfNotEmptyConverter" />
+            <converters:IsDateTimeNotMinValConverter x:Key="IsDateTimeNotMinValConverter" />
+            <converters:ToShortDateConverter x:Key="ToShortDateConverter" />
+            <converters:IsNumberNotEqualConverter x:Key="IsNumberNotEqualConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
     <CollectionView
@@ -31,6 +34,12 @@
                 VerticalItemSpacing="5"
                 Orientation="Vertical" />
         </CollectionView.ItemsLayout>
+        <!-- Use a footer to add some space to the bottom. Lets the collectionview scroll past the end a bit.-->
+        <CollectionView.Footer>
+            <Label
+                HeightRequest="10"
+                Text="" />
+        </CollectionView.Footer>
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <Frame
@@ -145,6 +154,7 @@
                                 Margin="0,5,0,0"
                                 Spacing="0">
                                 <StackLayout
+                                    Spacing="0"
                                     Orientation="Horizontal">
                                     <ffimageLoading:SvgCachedImage
                                         WidthRequest="25"
@@ -152,14 +162,28 @@
                                         HorizontalOptions="Start"
                                         Source="{Binding Status,Converter={StaticResource HoldStatusToImageConverter}}" />
                                     <Label
+                                        Margin="4,0,0,0"
                                         FontAttributes="Bold"
                                         FontSize="Medium"
                                         Text="{Binding Status,Converter={StaticResource EnumToDescriptionConverter}}"
                                         VerticalOptions="Center"
-                                        HorizontalTextAlignment="Center">
-                                    </Label>
+                                        HorizontalTextAlignment="Center" />
+                                    <Label
+                                        IsVisible="{Binding SuspendEndDate, Converter={StaticResource IsDateTimeNotMinValConverter}}"
+                                        FontSize="Small"
+                                        VerticalOptions="Center"
+                                        VerticalTextAlignment="Center"
+                                        Text=" until " />
+                                    <Label
+                                        IsVisible="{Binding SuspendEndDate, Converter={StaticResource IsDateTimeNotMinValConverter}}"
+                                        VerticalOptions="Center"
+                                        VerticalTextAlignment="Center"
+                                        FontSize="Medium"
+                                        FontAttributes="Bold"
+                                        Text="{Binding SuspendEndDate, Converter={StaticResource ToShortDateConverter}}" />
                                 </StackLayout>
-                                <Label>
+                                <Label
+                                    IsVisible="{Binding HoldPosition, Converter={StaticResource IsNumberNotEqualConverter}, ConverterParameter='-1'}">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span
