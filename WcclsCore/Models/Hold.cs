@@ -59,6 +59,10 @@ namespace WcclsCore.Models {
 		UpdateSuspend,
 		///<summary>Activate a suspended hold.</summary>
 		Activate,
+		///<summary>Return an item. Has to be an electronic item.</summary>
+		CheckIn,
+		///<summary>Not supported right now.</summary>
+		ChangeFormat,
 	}
 
 }

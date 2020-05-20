@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 
 namespace WcclsMobile.Pages {
-	public partial class HoldsDetailView : ContentView {
-		public HoldsDetailView() {
+	public partial class CheckedOutOptionsPage : PopupPage {
+		public CheckedOutOptionsPage() {
 			InitializeComponent();
 		}
 	}

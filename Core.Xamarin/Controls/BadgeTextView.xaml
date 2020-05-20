@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    x:Name="_badgeView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="Transparent"
+    x:Class="Core.Xamarin.Controls.BadgeTextView">
+    <Frame
+        x:Name="_circleFrame"
+        Padding="{Binding Source={x:Reference _badgeView},Path=BadgePadding}"
+        HasShadow="False"
+        BackgroundColor="{Binding Source={x:Reference _badgeView},Path=BadgeBackgroundColor}">
+        <Label
+            x:Name="_textLabel"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            VerticalOptions="Center"
+            VerticalTextAlignment="Center"
+            FontSize="Medium"
+            FontAttributes="{Binding Source={x:Reference _badgeView},Path=FontAttributes}"
+            TextColor="{Binding Source={x:Reference _badgeView},Path=TextColor}"
+            Text="{Binding Source={x:Reference _badgeView},Path=Text}" />
+    </Frame>
+</ContentView>

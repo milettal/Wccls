@@ -7,12 +7,10 @@
     xmlns:localConverters="clr-namespace:WcclsMobile.Converters"
     xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:wccls="clr-namespace:WcclsCore.Models;assembly=Core.Wccls"
-    xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms" xmlns:pages="clr-namespace:WcclsMobile.Pages"
     x:Class="WcclsMobile.Pages.HoldsDetailView">
     <ContentView.Resources>
         <ResourceDictionary>
-            <converters:StringIsNotNullOrEmpty x:Key="StringIsNotNullOrEmpty" />
-            <localConverters:ListAuthorsToDisplayConverter x:Key="ListAuthorsToDisplayConverter" />
             <localConverters:HoldStatusToImageConverter x:Key="HoldStatusToImageConverter" />
             <localConverters:LibraryToLibraryNameConverter x:Key="LibraryToLibraryNameConverter" />
             <localConverters:FormatToDisplayConverter x:Key="FormatToDisplayConverter" />
@@ -20,7 +18,6 @@
             <converters:IsCollectionNotNullOrEmpty x:Key="IsCollectionNotNullOrEmpty" />
             <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
             <converters:IsEnumNotEqualConverter x:Key="IsEnumNotEqualConverter" />
-            <converters:PrependStringIfNotEmptyConverter x:Key="PrependStringIfNotEmptyConverter" />
             <converters:IsDateTimeNotMinValConverter x:Key="IsDateTimeNotMinValConverter" />
             <converters:ToShortDateConverter x:Key="ToShortDateConverter" />
             <converters:IsNumberNotEqualConverter x:Key="IsNumberNotEqualConverter" />
@@ -50,7 +47,7 @@
                     <Grid ColumnSpacing="0" RowSpacing="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -63,93 +60,10 @@
                             HorizontalOptions="FillAndExpand"
                             AlignItems="Start"
                             AlignContent="Start">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <forms:CachedImage
-                                    Grid.Column="0"
-                                    Grid.Row="0"
-                                    WidthRequest="100"
-                                    Source="{Binding Item.ImageResources.MediumUrl}"
-                                    DownsampleToViewSize="True" />
-                                <StackLayout
-                                    Padding="0"
-                                    Margin="0"
-                                    Grid.Column="1"
-                                    Grid.Row="0"
-                                    Spacing="0">
-                                    <Label
-                                        FontSize="Medium"
-                                        FontAttributes="Bold"
-                                        Text="{Binding Item.Title}" />          
-                                    <Label
-                                        IsVisible="{Binding Item.Subtitle,Converter={StaticResource StringIsNotNullOrEmpty}}"
-                                        FontSize="Small"
-                                        FontAttributes="Italic"
-                                        Text="{Binding Item.Subtitle}" />
-                                    <Label
-                                        IsVisible="{Binding Item.ListAuthors,Converter={StaticResource IsCollectionNotNullOrEmpty}}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="by " />
-                                                <Span Text="{Binding Item.ListAuthors,Converter={StaticResource ListAuthorsToDisplayConverter}}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label>
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span
-                                                    Text="{Binding Item.PublicationDate}" />
-                                                <Span
-                                                    Text="{Binding Item.Edition,Converter={StaticResource PrependStringIfNotEmptyConverter},ConverterParameter={StaticResource SeparatorString}}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ffimageLoading:SvgCachedImage
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            IsVisible="{Binding Item.Format,Converter={StaticResource IsEnumNotEqualConverter},ConverterParameter={x:Static wccls:ItemFormat.Unknown}}"
-                                            VerticalOptions="Center"
-                                            WidthRequest="25"
-                                            HeightRequest="25"
-                                            HorizontalOptions="Start"
-                                            Source="{Binding Item.Format,Converter={StaticResource FormatToImageConverter}}" />
-                                         <Label
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            VerticalOptions="Center"
-                                            VerticalTextAlignment="Center"
-                                            Text="{Binding Item.Format,Converter={StaticResource FormatToDisplayConverter}}"
-                                            FontSize="Small" />
-                                    </Grid>
-                                    <Label
-                                        Margin="0,10,0,0"
-                                        IsVisible="{Binding Item.Description,Converter={StaticResource StringIsNotNullOrEmpty}}"
-                                        TextDecorations="Underline"
-                                        FontSize="Medium"
-                                        Text="View Description">
-                                        <Label.GestureRecognizers>
-                                            <TapGestureRecognizer
-                                                Command="{Binding Source={x:Reference _holdsDetailView},Path=BindingContext.ViewDescriptionCommand}"
-                                                CommandParameter="{Binding Item}" />
-                                        </Label.GestureRecognizers>
-                                    </Label>
-                                </StackLayout>
-                            </Grid>
+                            <pages:ItemInformationView
+                                BindingContext="{Binding Item}"
+                                ShowCallNumber="False"
+                                DescriptionSelectedCommand="{Binding Source={x:Reference _holdsDetailView},Path=BindingContext.ViewDescriptionCommand}" />
                             <StackLayout
                                 Margin="0,5,0,0"
                                 Spacing="0">

@@ -120,6 +120,6 @@
                 Animation="315-loader-ring.json"
                 Loop="True"
                 IsPlaying="True" />
-            </Frame>
+         </Frame>
     </AbsoluteLayout>
 </pages:PopupPage>

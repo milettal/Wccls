@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    x:Name="_checkedOutDetailView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:WcclsMobile.Pages"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:wccls="clr-namespace:WcclsCore.Models;assembly=Core.Wccls"
+    x:Class="WcclsMobile.Pages.CheckedOutDetailView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:ToShortDateConverter x:Key="ToShortDateConverter" />
+            <converters:ToTimeFrameUntilConverter x:Key="ToTimeFrameUntilConverter" />
+            <converters:IsEnumNotEqualConverter x:Key="IsEnumNotEqualConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <CollectionView
+        SelectionMode="None"
+        ItemsSource="{Binding CheckedOut.ListCheckedOutItems}">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout
+                VerticalItemSpacing="5"
+                Orientation="Vertical" />
+        </CollectionView.ItemsLayout>
+        <!-- Use a footer to add some space to the bottom. Lets the collectionview scroll past the end a bit.-->
+        <CollectionView.Footer>
+            <Label
+                HeightRequest="10"
+                Text="" />
+        </CollectionView.Footer>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame
+                    x:Name="_frame"
+                    VerticalOptions="Start"
+                    HasShadow="False"
+                    Padding="10"
+                    BorderColor="LightGray">
+                    <Frame.Triggers>
+                        <DataTrigger
+                            TargetType="Frame"
+                            Binding="{Binding Status,Converter={StaticResource IsEnumNotEqualConverter},ConverterParameter={x:Static wccls:CheckoutStatus.Overdue}}"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="White" />
+                        </DataTrigger>
+                        <DataTrigger
+                            TargetType="Frame"
+                            Binding="{Binding Status,Converter={StaticResource IsEnumNotEqualConverter},ConverterParameter={x:Static wccls:CheckoutStatus.Overdue}}"
+                            Value="False">
+                            <Setter Property="BackgroundColor" Value="LightPink" />
+                        </DataTrigger>
+                    </Frame.Triggers>
+                    <Grid ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackLayout
+                            Grid.Row="0"
+                            Grid.Column="0">
+                            <StackLayout
+                                Spacing="0"
+                                Orientation="Horizontal">
+                                <Label
+                                    FontSize="Medium"
+                                    Text="Due: " />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="Medium"
+                                    Text="{Binding DueDate, Converter={StaticResource ToShortDateConverter}}" />
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="Medium"
+                                                Text=" (" />
+                                            <Span
+                                                FontSize="Medium"
+                                                Text="{Binding DueDate, Converter={StaticResource ToTimeFrameUntilConverter}}" />
+                                            <Span
+                                                FontSize="Medium"
+                                                Text=")" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                            <pages:ItemInformationView
+                                ShowDescription="False"
+                                ShowCallNumber="True"
+                                CallNumber="{Binding Source={x:Reference _frame},Path=BindingContext.CallNumber}"
+                                BindingContext="{Binding LibraryItem}" />
+                        </StackLayout>
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            IsVisible="{Binding ListActions,Converter={StaticResource IsCollectionNotNullOrEmpty}}"
+                            Command="{Binding Source={x:Reference _checkedOutDetailView},Path=BindingContext.ShowCheckedOutOptionsCommand}"
+                            CommandParameter="{Binding .}"
+                            VerticalOptions="Start"
+                            HorizontalOptions="End"
+                            BackgroundColor="White"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            ImageSource="baseline_more_vert_black_24.png" />
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentView>

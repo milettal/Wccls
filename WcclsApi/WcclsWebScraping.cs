@@ -34,8 +34,6 @@ namespace WcclsApi {
 		private const string HOLDS_URL = "https://gateway.bibliocommons.com/v2/libraries/wccls/holds";
 		///<summary>The URL for getting checked out items.</summary>
 		private const string CHECKED_OUT_URL = "https://gateway.bibliocommons.com/v2/libraries/wccls/checkouts";
-		///<summaryThe status that indicates a hold is ready for pickup.</summary>
-		private const string READY_FOR_PICKUP_KEY = "ready for pickup";
 		///<summary>The instance for this HttpClient.</summary>
 		private HttpClient _client { get; }
 		private ISystemClock _systemClock { get; }
@@ -341,7 +339,7 @@ namespace WcclsApi {
 
 		///<summary>Returns all of the items currently checked out to the user.</summary>
 		public async Task<CheckedOutResult> GetCheckedOut(long userId) {
-			if(userId<=0) {
+			if(userId <= 0) {
 				throw new ArgumentException(nameof(userId));
 			}
 			HttpResponseMessage response = await _client.GetAsync($"{CHECKED_OUT_URL}?accountId={userId}&size=25&locale=en-US");
@@ -365,6 +363,7 @@ namespace WcclsApi {
 							fines = (double)0,
 							barcode = "",
 							dueDate = "",
+							callNumber = "",
 						}),
 					},
 					borrowing = new {
@@ -392,18 +391,20 @@ namespace WcclsApi {
 						continue;
 					}
 					Bib bib = result.entities.bibs[checkout.Value.metadataId];
+					Enum.TryParse(checkout.Value.status, out CheckoutStatus checkoutStatus);
 					DateTime.TryParse(checkout.Value.dueDate, out DateTime dueDate);
 					CheckedOutItem checkedOut = new CheckedOutItem {
-						Fines=checkout.Value.fines,
-						DueDate=dueDate,
-						Id=checkout.Value.checkoutId,
-						ListActions=checkout.Value.actions.Select(x => {
+						Fines = checkout.Value.fines,
+						DueDate = dueDate,
+						Id = checkout.Value.checkoutId,
+						ListActions = checkout.Value.actions.Select(x => {
 							Enum.TryParse(x, true, out ItemAction action);
 							return action;
 						}).Where(x => x!=ItemAction.Unknown).ToList(),
-						Status=checkout.Value.status,
-						TimesRenewed=checkout.Value.timesRenewed,
-						LibraryItem=GetItemFromBib(bib),
+						Status = checkoutStatus,
+						TimesRenewed = checkout.Value.timesRenewed,
+						CallNumber = checkout.Value.callNumber,
+						LibraryItem = GetItemFromBib(bib),
 					};
 					listItems.Add(checkedOut);
 				}
@@ -467,20 +468,20 @@ namespace WcclsApi {
 							continue;
 						}
 						RenewResult renewResult = dictResults[failure.id];
-						renewResult.WasRenewed=false;
-						renewResult.ErrorMessage=failure?.errorResponseDTO?.message;
+						renewResult.WasRenewed = false;
+						renewResult.ErrorMessage = failure?.errorResponseDTO?.message;
 					}
 				}
 				return new RenewItemsResult {
-					DictionaryResponses=dictResults,
+					DictionaryResponses = dictResults,
 				};
 			}
 			catch(Exception e) {
 				//All failed
 				return new RenewItemsResult {
-					DictionaryResponses=listCheckoutIds.ToDictionary(x => x, x => new RenewResult {
-						WasRenewed=false,
-						ErrorMessage=$"Bad Status Code: {(int)response.StatusCode} - {response.StatusCode}",
+					DictionaryResponses = listCheckoutIds.ToDictionary(x => x, x => new RenewResult {
+						WasRenewed = false,
+						ErrorMessage = $"Bad Status Code: {(int)response.StatusCode} - {response.StatusCode}",
 					})
 				};
 			}

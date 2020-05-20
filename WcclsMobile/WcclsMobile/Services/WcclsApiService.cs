@@ -271,6 +271,38 @@ namespace WcclsMobile.Services {
 			return await apiCall();
 		}
 
+		public Task<(string error, CheckedOutResult result)> CheckedOut(User user) {
+			if(user == null) {
+				throw new ArgumentNullException(nameof(user));
+			}
+			return RunNonLoginCall(user, async () => {
+				HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"{API_URL}/account/checkedout");
+				message.Headers.Add(SESSION_ID_HEADER, user.SessionId);
+				HttpResponseMessage response;
+				try {
+					response = await _client.SendAsync(message);
+				}
+				catch(Exception e) {
+					return ($"An error occurred. Please check your internet connection and try again - {e.Message}", null);
+				}
+				string content = await response.Content.ReadAsStringAsync();
+				if(!response.IsSuccessStatusCode) {
+					return ($"Error - {content}", null);
+				}
+				CheckedOutResult result;
+				try {
+					result = JsonConvert.DeserializeObject<CheckedOutResult>(content);
+				}
+				catch(Exception e) {
+					return ($"Error deserializing {nameof(CheckedOutResult)} - {content}.", null);
+				}
+				if(result == null) {
+					return ("Failed to get checked out items.", null);
+				}
+				return ("", result);
+			});
+		}
+
 		private class SessionLock {
 
 			private AsyncLock _lock = new AsyncLock();

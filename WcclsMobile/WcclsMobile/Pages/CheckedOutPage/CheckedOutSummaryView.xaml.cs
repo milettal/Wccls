@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Xamarin.Forms;
 
 namespace WcclsMobile.Pages {
-	public partial class HoldsDetailView : ContentView {
-		public HoldsDetailView() {
+	public partial class CheckedOutSummaryView : ContentView {
+		public CheckedOutSummaryView() {
 			InitializeComponent();
 		}
 	}

@@ -1,44 +1,5 @@
 ﻿<Properties StartupConfiguration="Android and API">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WcclsMobile/WcclsMobile/Services/UserAuthenticationService.cs">
-    <Files>
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldOptionsPopupPageVM.cs" Line="202" Column="5" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/UserHolds.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesPageVM.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldOptionsPopupPage.xaml" />
-      <File FileName="WcclsApi/Program.cs" Line="7" Column="1" />
-      <File FileName="Core/TaskUtils.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Services/UserAuthenticationService.cs" Line="28" Column="39" />
-      <File FileName="WcclsMobile/WcclsMobile/Services/IWcclsApiService.cs" />
-      <File FileName="WcclsApi/Controllers/LoginController.cs" />
-      <File FileName="WcclsApi/Controllers/AccountController.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/PauseHoldPopupPage.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/PauseHoldPopupPage.xaml.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/PauseHoldPopupPageVM.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/App.xaml.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/SummaryPopupPageVM.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Services/WcclsApiService.cs" />
-      <File FileName="Core.Xamarin/Converters/ToShortDateConverter.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsPageVM.cs" />
-      <File FileName="WcclsApi/WcclsWebScraping.cs" />
-      <File FileName="WcclsCore/Models/Request/ChangeHoldsLocationRequest.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsDetailView.xaml" />
-      <File FileName="Core.Xamarin/Converters/IsNumberNotEqualConverter.cs" />
-      <File FileName="WcclsCore/Models/Result/HoldsResult.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsSummaryView.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsPage.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsDetailPage.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsDetailPage.xaml.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/HoldsPage/HoldsDetailPageVM.cs" />
-      <File FileName="Core.Xamarin/Converters/PrependStringIfNotEmptyConverter.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesDetailsPageVM.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/UserFines.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesPage.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesBalanceView.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesBalanceView.xaml.cs" />
-      <File FileName="Core.Xamarin/Controls/BindablePicker.cs" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesDetails.xaml" />
-      <File FileName="WcclsMobile/WcclsMobile/Pages/FinesPage/FinesDetails.xaml.cs" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
@@ -46,50 +7,27 @@
             <Node name="Mobile" expanded="True">
               <Node name="WcclsMobile" expanded="True">
                 <Node name="Pages" expanded="True">
-                  <Node name="FinesPage" expanded="True">
-                    <Node name="FinesBalanceView.xaml" expanded="True" />
-                    <Node name="FinesDetails.xaml" expanded="True" />
+                  <Node name="CheckedOutPage" expanded="True">
+                    <Node name="UserCheckOuts.cs" selected="True" />
                   </Node>
+                  <Node name="FinesPage" expanded="True" />
                   <Node name="HoldsPage" expanded="True" />
-                  <Node name="SearchPage" expanded="True" />
                 </Node>
-                <Node name="Services" expanded="True">
-                  <Node name="UserAuthenticationService.cs" selected="True" />
-                </Node>
-                <Node name="App.xaml" expanded="True" />
+                <Node name="Services" expanded="True" />
               </Node>
             </Node>
-            <Node name="Web" expanded="True">
-              <Node name="WcclsApi" expanded="True">
-                <Node name="Controllers" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Core" expanded="True">
-              <Node name="DependencyInjection" expanded="True" />
-            </Node>
-            <Node name="Core.Wccls" expanded="True">
-              <Node name="Models" expanded="True">
-                <Node name="Request" expanded="True" />
-                <Node name="Result" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Core.Xamarin" expanded="True">
-              <Node name="Controls" expanded="True" />
-              <Node name="MVVM" expanded="True" />
-            </Node>
+            <Node name="Web" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.Mobile.WcclsMobile.Android PreferredExecutionTarget="Android.pixel_2_pie_9_0_-_api_28" />
+  <MonoDevelop.Ide.ItemProperties.Mobile.WcclsMobile.Android Xamarin.HotReload.WrongLinkerErrorInfoBar.WcclsMobile.Android.HideInfoBar="True" PreferredExecutionTarget="Android.pixel_2_pie_9_0_-_api_28" />
   <MonoDevelop.Ide.ItemProperties.Web.WcclsApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/lukemiletta/Documents/Wccls/Core.Xamarin/Converters/IsEnumNotEqualConverter.cs" relfile="Core.Xamarin/Converters/IsEnumNotEqualConverter.cs" line="25" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations>
     <MultiItemSolutionRunConfiguration Id="Android and API" Name="Android and API">

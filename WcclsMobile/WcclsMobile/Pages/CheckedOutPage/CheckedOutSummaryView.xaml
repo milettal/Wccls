@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Core.Xamarin.Controls;assembly=Core.Xamarin"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    x:Class="WcclsMobile.Pages.CheckedOutSummaryView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:ToShortDateConverter x:Key="ToShortDateConverter" />
+            <converters:IsDateTimeNotMinValConverter x:Key="IsDateTimeNotMinValConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackLayout
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            IsVisible="{Binding NextDue,Converter={StaticResource IsDateTimeNotMinValConverter},FallbackValue=False}"
+            Spacing="0"
+            VerticalOptions="End"
+            HorizontalOptions="Start">
+            <Label
+                HorizontalOptions="Start"
+                HorizontalTextAlignment="Start"
+                FontSize="Medium"
+                VerticalOptions="End"
+                Text="Next Due Date:"/>
+            <Label
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Start"
+                FontSize="Medium"
+                FontAttributes="Bold"
+                Text="{Binding NextDue,Converter={StaticResource ToShortDateConverter}}" />
+        </StackLayout>
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            VerticalOptions="Center"
+            VerticalTextAlignment="Center"
+            HorizontalTextAlignment="End"
+            FontSize="Medium"
+            Text="Due Soon: " />
+        <controls:BadgeTextView
+            Grid.Row="0"
+            Grid.Column="2"
+            BadgePadding="0.75"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Text="{Binding DueSoonItems}"
+            TextColor="White"
+            BadgeBackgroundColor="DarkGoldenrod"
+            FontAttributes="Bold" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalOptions="Center"
+            VerticalTextAlignment="Center"
+            HorizontalTextAlignment="End"
+            FontSize="Medium"
+            Text="Overdue: " />
+        <controls:BadgeTextView
+            Grid.Row="1"
+            Grid.Column="2"
+            BadgePadding="0.75"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Text="{Binding OverdueItems}"
+            TextColor="White"
+            BadgeBackgroundColor="DarkRed"
+            FontAttributes="Bold" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="1"
+            VerticalOptions="Center"
+            VerticalTextAlignment="Center"
+            HorizontalTextAlignment="End"
+            FontSize="Medium"
+            Text="Total: " />
+        <controls:BadgeTextView
+            Grid.Row="2"
+            Grid.Column="2"
+            BadgePadding="0.75"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Text="{Binding TotalItems}"
+            TextColor="White"
+            BadgeBackgroundColor="DarkGreen"
+            FontAttributes="Bold" />
+    </Grid>
+</ContentView>

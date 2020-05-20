@@ -48,7 +48,6 @@ C:/Users/lukem/source/repos/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.genr
 /Users/lukemiletta/Documents/Wccls/WcclsApi/bin/Debug/netcoreapp3.1/Core.Wccls.pdb
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.csprojAssemblyReference.cache
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.csproj.CoreCompileInputs.cache
-/Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.MvcApplicationPartsAssemblyInfo.cs
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.MvcApplicationPartsAssemblyInfo.cache
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.AssemblyInfoInputs.cache
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.AssemblyInfo.cs
@@ -59,3 +58,4 @@ C:/Users/lukem/source/repos/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.genr
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.dll
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.pdb
 /Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.genruntimeconfig.cache
+/Users/lukemiletta/Documents/Wccls/WcclsApi/obj/Debug/netcoreapp3.1/WcclsApi.MvcApplicationPartsAssemblyInfo.cs

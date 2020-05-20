@@ -34,5 +34,8 @@ namespace WcclsMobile.Services {
 
 		///<summary>Updates the given holds pickup location to the passed in location. Returns an error if something went wrong.</summary>
 		Task<string> UpdateHoldPickupLocation(User user, List<Hold> listHolds, Library newPickupLocation);
+
+		///<summary>Returns either an error or all books checked out by a user.</summary>
+		Task<(string error, CheckedOutResult result)> CheckedOut(User user);
 	}
 }

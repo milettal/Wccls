@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    x:Class="WcclsMobile.Pages.CheckedOutOptionsPage">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <Frame
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        BorderColor="LightGray"
+        Padding="10"
+        BackgroundColor="White">
+        <AbsoluteLayout>
+            <StackLayout
+                Padding="0"
+                Spacing="5"
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                WidthRequest="150">
+                <Button
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    IsVisible="{Binding CanRenewItem}"
+                    Command="{Binding RenewCommand}"
+                    Text="Renew" />
+                <Button
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    IsVisible="{Binding CanCheckInItem}"
+                    Command="{Binding CheckInCommand}"
+                    Text="Check In" />
+                <Button
+                    IsEnabled="{Binding IsLoading,Converter={StaticResource InverseBoolConverter}}"
+                    Command="{Binding CloseCommand}"
+                    Text="Close" />
+            </StackLayout>
+            <Frame
+                IsVisible="{Binding IsLoading}"
+                AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                HorizontalOptions="Center"
+                Padding="6"
+                VerticalOptions="Center"
+                BorderColor="LightGray"
+                CornerRadius="6"
+                BackgroundColor="White">
+                <forms:AnimationView
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Animation="315-loader-ring.json"
+                    Loop="True"
+                    IsPlaying="True" />
+         </Frame>
+        </AbsoluteLayout>
+    </Frame>
+</pages:PopupPage>

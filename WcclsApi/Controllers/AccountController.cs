@@ -166,7 +166,7 @@ namespace WcclsApi.Controllers {
 		}
 
 		[HttpGet]
-		[Route("checkout")]
+		[Route("checkedout")]
 		public async Task<ObjectResult> GetCheckedOut() {
 			WcclsWebScraping scraping = new WcclsWebScraping(_sessionInfo.Client, _systemClock);
 			CheckedOutResult result;

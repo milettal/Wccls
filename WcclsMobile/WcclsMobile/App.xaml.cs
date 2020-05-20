@@ -40,6 +40,7 @@ namespace WcclsMobile {
 			containerRegistry.RegisterForNavigation<HoldsDetailPage, HoldsDetailPageVM>();
 			containerRegistry.RegisterForNavigation<MenuPage, MenuPageVM>();
 			containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageVM>();
+			containerRegistry.RegisterForNavigation<CheckedOutOptionsPage, CheckedOutOptionsPageVM>();
 			containerRegistry.RegisterForNavigation<AddUser, AddUserVM>();
 			containerRegistry.RegisterForNavigation<AccountDetailPage, AccountDetailPageVM>();
 			containerRegistry.RegisterForNavigation<FinesDetailsPage, FinesDetailsPageVM>();

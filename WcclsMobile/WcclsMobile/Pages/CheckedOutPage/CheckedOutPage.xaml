@@ -3,14 +3,24 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+    xmlns:pages="clr-namespace:WcclsMobile.Pages" xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     Title="Checked Out"
     IconImageSource="baseline_library_books_white_48.png"
     x:Class="WcclsMobile.Pages.CheckedOutPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:IsCollectionCountEqual x:Key="IsCollectionCountEqual" />
+            <converters:IsCollectionCountNotEqual x:Key="IsCollectionCountNotEqual" />
+            <converters:CollectionItemAtIndexConverter x:Key="CollectionItemAtIndexConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding RefreshCommand}"
+            IconImageSource="baseline_refresh_white_24.png"/>
+    </ContentPage.ToolbarItems>
     <StackLayout>      
         <StackLayout IsVisible="{Binding IsUserLoggedIn, Converter={StaticResource InverseBoolConverter}}">
             <Label
@@ -22,14 +32,83 @@
                 FontSize="Medium"
                 Text="Please login to an account to use this feature." />
         </StackLayout>
-        <StackLayout IsVisible="{Binding IsUserLoggedIn}">
-            <Label
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="Center"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontSize="Large"
-                Text="Logged In!" />
-        </StackLayout>
+        <AbsoluteLayout IsVisible="{Binding IsUserLoggedIn}" Margin="15,15,15,0">
+            <forms:AnimationView
+                AbsoluteLayout.LayoutBounds="0.5,0,50,50"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                IsVisible="{Binding IsLoadingCheckOuts}"
+                Animation="315-loader-ring.json"
+                Loop="True"
+                IsPlaying="True" />
+            <StackLayout
+                IsEnabled="{Binding IsLoadingCheckOuts,Converter={StaticResource InverseBoolConverter}}"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All">
+                <pages:CheckedOutSummaryView
+                    BindingContext="{Binding CheckedOutSummary}" />
+                <!-- Summary View -->
+                <BoxView
+                    HorizontalOptions="FillAndExpand"
+                    HeightRequest="1"
+                    Color="LightGray" />
+                <!-- There is only one user logged in. Because of this, we will simply show the users checked out items. -->
+                <StackLayout IsVisible="{Binding ListUserCheckOuts,Converter={StaticResource IsCollectionCountEqual},ConverterParameter='1'}">
+                    <pages:CheckedOutDetailView
+                        BindingContext="{Binding ListUserCheckOuts,Converter={StaticResource CollectionItemAtIndexConverter},ConverterParameter=0}" />
+                </StackLayout>
+                <!-- We have two or more accounts. Instead we will show a list of users with check out summaries. Clicking on one will let the user view
+                    the items up close for each account. -->
+                <StackLayout IsVisible="{Binding ListUserCheckOuts,Converter={StaticResource IsCollectionCountNotEqual},ConverterParameter='1'}">
+                    <CollectionView
+                        x:Name="_collectionViewUserCheckOuts"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedUserCheckOuts}"
+                        ItemsSource="{Binding ListUserCheckOuts}"
+                        SelectionChangedCommand="{Binding UserCheckOutsSelectedCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={x:Reference _collectionViewUserCheckOuts}, Path=SelectedItem}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Footer>
+                            <Label
+                                HeightRequest="15"
+                                Text="" />
+                        </CollectionView.Footer>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="2,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        Grid.Column="0"
+                                        FontSize="Medium"
+                                        VerticalOptions="Center"
+                                        VerticalTextAlignment="Center"
+                                        Text="{Binding User.Nickname}" />                             
+                                    <ffimageLoading:SvgCachedImage
+                                        Grid.Column="1"
+                                        IsVisible="{Binding HasAnOverdueItem}"
+                                        WidthRequest="25"
+                                        HeightRequest="25"
+                                        Margin="0,0,8,0"
+                                        VerticalOptions="Center"
+                                        Source="resource://WcclsMobile.Images.error_outline-black-18dp.svg" />
+                                    <Label
+                                        VerticalOptions="Center"
+                                        VerticalTextAlignment="Center"
+                                        FontSize="Medium"
+                                        Text="{Binding CheckedOut.TotalCheckedOut}"
+                                        Grid.Column="2">
+                                    </Label>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
     </StackLayout>
 </ContentPage>

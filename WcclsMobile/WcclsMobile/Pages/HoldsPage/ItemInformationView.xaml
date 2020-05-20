@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    x:Name="_itemInformationView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageLoading="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:localConverters="clr-namespace:WcclsMobile.Converters"
+    xmlns:converters="clr-namespace:Core.Xamarin.Converters;assembly=Core.Xamarin"
+    xmlns:wccls="clr-namespace:WcclsCore.Models;assembly=Core.Wccls" xmlns:controls="clr-namespace:Core.Xamarin.Controls;assembly=Core.Xamarin"
+    x:Class="WcclsMobile.Pages.ItemInformationView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:StringIsNotNullOrEmpty x:Key="StringIsNotNullOrEmpty" />
+            <localConverters:ListAuthorsToDisplayConverter x:Key="ListAuthorsToDisplayConverter" />
+            <localConverters:HoldStatusToImageConverter x:Key="HoldStatusToImageConverter" />
+            <localConverters:LibraryToLibraryNameConverter x:Key="LibraryToLibraryNameConverter" />
+            <localConverters:FormatToDisplayConverter x:Key="FormatToDisplayConverter" />
+            <localConverters:FormatToImageConverter x:Key="FormatToImageConverter" />
+            <converters:IsCollectionNotNullOrEmpty x:Key="IsCollectionNotNullOrEmpty" />
+            <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+            <converters:IsEnumNotEqualConverter x:Key="IsEnumNotEqualConverter" />
+            <converters:PrependStringIfNotEmptyConverter x:Key="PrependStringIfNotEmptyConverter" />
+            <converters:IsDateTimeNotMinValConverter x:Key="IsDateTimeNotMinValConverter" />
+            <converters:ToShortDateConverter x:Key="ToShortDateConverter" />
+            <converters:IsNumberNotEqualConverter x:Key="IsNumberNotEqualConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <forms:CachedImage
+            Grid.Column="0"
+            Grid.Row="0"
+            WidthRequest="100"
+            Source="{Binding ImageResources.MediumUrl,FallbackValue=''}"
+            DownsampleToViewSize="True" />
+        <StackLayout
+            Padding="0"
+            Margin="0"
+            Grid.Column="1"
+            Grid.Row="0"
+            Spacing="0">
+            <Label
+                FontSize="Medium"
+                FontAttributes="Bold"
+                Text="{Binding Title}" />          
+            <Label
+                IsVisible="{Binding Subtitle,Converter={StaticResource StringIsNotNullOrEmpty}}"
+                FontSize="Small"
+                FontAttributes="Italic"
+                Text="{Binding Subtitle}" />
+            <Label
+                IsVisible="{Binding ListAuthors,Converter={StaticResource IsCollectionNotNullOrEmpty}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="by " />
+                        <Span Text="{Binding ListAuthors,Converter={StaticResource ListAuthorsToDisplayConverter}}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Grid ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Text="{Binding PublicationDate}" />
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    IsVisible="{Binding Edition,Converter={StaticResource StringIsNotNullOrEmpty}}"
+                    Text=" | " />
+                <Label
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    Text="{Binding Edition}" />
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ffimageLoading:SvgCachedImage
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    IsVisible="{Binding Format,Converter={StaticResource IsEnumNotEqualConverter},ConverterParameter={x:Static wccls:ItemFormat.Unknown}}"
+                    VerticalOptions="Center"
+                    WidthRequest="25"
+                    HeightRequest="25"
+                    HorizontalOptions="Start"
+                    Source="{Binding Format,Converter={StaticResource FormatToImageConverter}}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding Format,Converter={StaticResource FormatToDisplayConverter}}"
+                    FontSize="Small" />
+            </Grid>
+            <Label
+                IsVisible="{Binding Source={x:Reference _itemInformationView},Path=ShowCallNumber}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span
+                            Text="Call Number: " />
+                        <Span
+                            Text="{Binding Source={x:Reference _itemInformationView},Path=CallNumber}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
+                Margin="0,10,0,0"
+                IsVisible="{Binding Source={x:Reference _itemInformationView},Path=ShowDescription}"
+                TextDecorations="Underline"
+                FontSize="Medium"
+                Text="View Description">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding Source={x:Reference _itemInformationView},Path=DescriptionSelectedCommand}"
+                        CommandParameter="{Binding .}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </Grid>
+</ContentView>
